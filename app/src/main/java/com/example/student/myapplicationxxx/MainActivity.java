@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         Runnable rab = new Runnable() {
             @Override
             public void run() {
-                setContentView(R.layout.activity_main);     //設定 Layout
+                setContentView(R.layout.activity_main);//設定 Layout
             }
         };
         new Handler().postDelayed(rab, 5000);    // 5 sec 後轉跳主頁
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         Intent in = new Intent();
         in.setClass(MainActivity.this, Start.class);
         startActivity(in);
+        overridePendingTransition(R.anim.push_in,R.anim.push_out);
 
     }
 
@@ -76,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         new AlertDialog.Builder(this)
                 .setMessage("您要離開應用程式？")
                 .setPositiveButton("繼續", new DialogInterface.OnClickListener() {
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
+                        overridePendingTransition(R.anim.push_in,R.anim.push_out);
                     }
                 })
                 .show();
