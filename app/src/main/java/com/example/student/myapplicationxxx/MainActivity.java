@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+
+import com.example.student.myapplicationxxx.Network.Net;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(rab, 5000);    // 5 sec 後轉跳主頁
 //                runLoging();                               //執行登入程序
 
-
+        // ==========檢查Network==========
+        Log.d("LOG", String.valueOf(Net.NetCheck(this)));
 
         settinglink = (ImageButton) findViewById(R.id.settinglink);
         messagelink = (ImageButton) findViewById(R.id.messagelink);
