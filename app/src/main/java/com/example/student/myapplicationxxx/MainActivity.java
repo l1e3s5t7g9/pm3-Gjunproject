@@ -73,4 +73,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        new AlertDialog.Builder(this)
+                .setMessage("您要離開應用程式？")
+                .setPositiveButton("繼續", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ;
+                    }
+                })
+                .setNegativeButton("離開", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .show();
+    }
 }
