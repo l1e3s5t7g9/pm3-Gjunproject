@@ -113,6 +113,7 @@ public class PlanFragment extends DialogFragment {
                     }
                 });
         mDialog = builder.create();
+        mDialog.setCanceledOnTouchOutside(false);// 设置点击屏幕Dialog不消失
     }
 
     private Plan 輸入資料toNewPlan(){

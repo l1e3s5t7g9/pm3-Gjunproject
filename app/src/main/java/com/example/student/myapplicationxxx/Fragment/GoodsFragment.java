@@ -99,6 +99,7 @@ public class GoodsFragment extends DialogFragment {
                     }
                 });
         mDialog = builder.create();
+        mDialog.setCanceledOnTouchOutside(false);// 设置点击屏幕Dialog不消失
     }
 
     private Goods 輸入資料toNewGoods(){
