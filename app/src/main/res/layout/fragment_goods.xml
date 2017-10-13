@@ -11,14 +11,14 @@
         android:hint="商品"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:layout_margin="4dp"/>
     <EditText
         android:id="@+id/price"
         android:hint="價格"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
+        android:inputType="numberDecimal"
         android:layout_margin="4dp"/>
 
 </LinearLayout>

@@ -25,7 +25,7 @@
         android:hint="截止時間"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
+        android:inputType="numberDecimal"
         android:layout_margin="4dp"/>
 
 
