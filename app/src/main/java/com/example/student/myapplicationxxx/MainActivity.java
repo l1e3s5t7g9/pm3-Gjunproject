@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.student.myapplicationxxx.Class_Object.Plan;
 import com.example.student.myapplicationxxx.Network.Net;
@@ -113,7 +112,7 @@ implements
     private void initListView() {
         mListView = (ListView) findViewById(R.id.onlinelist);
         mListView.setAdapter(new OnlinListAdapter(this));
-        mListView.setOnItemClickListener((AdapterView.OnItemClickListener) this);
+        mListView.setOnItemClickListener(this);
     }
     public List<Plan> getmPlanList() {
         return mPlanList;
@@ -124,9 +123,8 @@ implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==回傳plan) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(MainActivity.this, data.getStringExtra("user_input"), Toast.LENGTH_SHORT).show();
                 initListView();
-                Plan plan = new Plan("organizer", "location");
+                Plan plan = (Plan) data.getSerializableExtra("plan");
                 mPlanList.add(plan);
                 OnlinListAdapter OnlinListAdapter = (OnlinListAdapter) mListView.getAdapter();
                 OnlinListAdapter.notifyDataSetChanged();

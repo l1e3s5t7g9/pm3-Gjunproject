@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.student.myapplicationxxx.Class_Object.Goods;
-import com.example.student.myapplicationxxx.Class_Object.Plan;
 import com.example.student.myapplicationxxx.Exception.MyDialogFragmentException;
 import com.example.student.myapplicationxxx.R;
 
@@ -96,7 +95,6 @@ public class PlanFragment extends DialogFragment {
 
                             }
                             else{
-                                Plan plan = 輸入資料toNewPlan();
                                 okcancelHandler.新增專案確定(出貨店家,集散地點,時間);
                             }
                         } catch (NumberFormatException e) {
@@ -116,17 +114,5 @@ public class PlanFragment extends DialogFragment {
         mDialog.setCanceledOnTouchOutside(false);// 设置点击屏幕Dialog不消失
     }
 
-    private Plan 輸入資料toNewPlan(){
 
-        et_store = (EditText) mDialogView.findViewById(R.id.store);
-        et_location = (EditText) mDialogView.findViewById(R.id.location);
-        String location=et_location.getText().toString();
-
-
-        return new Plan(organizer, location);
-
-
-
-
-    }
 }

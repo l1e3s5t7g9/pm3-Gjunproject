@@ -15,14 +15,12 @@ public class Plan implements Serializable {
     private Calendar deadline;   // 截止時間
     private String topic;        // 發起名目
     private List<Goods> goods;  // 發起商品
-
-    public Plan(String organizer, String location) {
-//    public Plan(String organizer, String location, Calendar deadline, String topic, List<Goods> goods) {
+    public Plan(String organizer, String location, Calendar deadline, String topic, List<Goods> goods) {
         this.organizer = organizer;
         this.location = location;
-//        this.deadline = deadline;
-//        this.topic = topic;
-//        this.goods = goods;
+        this.deadline = deadline;
+        this.topic = topic;
+        this.goods = goods;
     }
 
     public String getOrganizer() {

@@ -50,9 +50,9 @@ public class OnlinListAdapter extends BaseAdapter {
         Plan plan = activity.getmPlanList().get(position);
 
         tvItemId.setText("id");
-        tvItemStore.setText("123");
-        tvItemGoods.setText("123");
-        tvItemPrice.setText(String.valueOf(123));
+        tvItemStore.setText(plan.getTopic());
+        tvItemGoods.setText(plan.getLocation());
+        tvItemPrice.setText(plan.getDeadline().toString());
         System.out.println(v.getBackground());
         return v;
     }
