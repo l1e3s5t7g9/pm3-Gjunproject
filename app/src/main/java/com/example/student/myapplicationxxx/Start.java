@@ -53,8 +53,14 @@ public class Start extends AppCompatActivity
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialog = new PlanFragment();
-                dialog.show(getSupportFragmentManager(), "PlanFragment");
+                if(mGoodsList.size()>0){
+                    DialogFragment dialog = new PlanFragment();
+                    dialog.show(getSupportFragmentManager(), "PlanFragment");
+                }
+                else{
+                    處理訊息("至少要有一筆商品");
+                }
+
             }
 
 

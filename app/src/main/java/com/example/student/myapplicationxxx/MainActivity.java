@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.example.student.myapplicationxxx.Class_Object.Plan;
 import com.example.student.myapplicationxxx.Network.Net;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +126,18 @@ implements
             if (resultCode == RESULT_OK) {
                 initListView();
                 Plan plan = (Plan) data.getSerializableExtra("plan");
-                mPlanList.add(plan);
+
+//                plan.addGoods(new Goods("asdnji","nnjo",121));
+//                plan.addGoods(new Goods("asdn1253","nnj7777",12));
+//                plan.addGoods(new Goods("asdn1250003","nnj770077",999));
+                Gson gson = new Gson();
+                String 上傳plan=gson.toJson(plan);
+
+                Plan 下載plan=gson.fromJson(上傳plan,Plan.class);
+
+
+
+                mPlanList.add(下載plan);
                 OnlinListAdapter OnlinListAdapter = (OnlinListAdapter) mListView.getAdapter();
                 OnlinListAdapter.notifyDataSetChanged();
             }
