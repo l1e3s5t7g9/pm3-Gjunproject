@@ -16,12 +16,10 @@ import com.example.student.myapplicationxxx.Class_Object.Goods;
 import com.example.student.myapplicationxxx.Class_Object.Plan;
 import com.example.student.myapplicationxxx.Fragment.GoodsFragment;
 import com.example.student.myapplicationxxx.Fragment.PlanFragment;
+import com.example.student.myapplicationxxx.Tools.time;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class Start extends AppCompatActivity
@@ -147,30 +145,11 @@ public class Start extends AppCompatActivity
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-    // ====== 截止時間換算 ======
-    public Calendar setDeadline(String t) {
-        Calendar cal = Calendar.getInstance(); // 取得目前時間
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");  //定義好時間字串的格式
-            Date dt = sdf.parse(t);                              //將字串轉成Date型
-            cal.setTime(dt);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return cal;
-    }
-
-    public Calendar setDeadline(int mm) {
-        Calendar cal = Calendar.getInstance(); // 取得目前時間
-//        cal.add(Calendar.HOUR, hh);        //小時+hh
-        cal.add(Calendar.MINUTE, mm);      //分+mm
-        return cal;
-    }
 
     private Plan 輸入資料toNewPlan(String 出貨店家,String 集散地點,int 時間){
         String organizer="帳戶";
         String location=集散地點;
-        Calendar deadline=setDeadline(時間);
+        Calendar deadline= time.setDeadline(時間);
         String topic=出貨店家;
         List<Goods> goods=mGoodsList;
 

@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.example.student.myapplicationxxx.Class_Object.Plan;
 
+import static com.example.student.myapplicationxxx.Tools.time.calendar2string;
+
 /**
  * Created by TiGerTomb on 2017/10/13.
  */
@@ -52,7 +54,7 @@ public class OnlinListAdapter extends BaseAdapter {
         tvItemId.setText("id");
         tvItemStore.setText(plan.getTopic());
         tvItemGoods.setText(plan.getLocation());
-        tvItemPrice.setText(plan.getDeadline().toString());
+        tvItemPrice.setText(calendar2string(plan.getDeadline()));
         System.out.println(v.getBackground());
         return v;
     }
