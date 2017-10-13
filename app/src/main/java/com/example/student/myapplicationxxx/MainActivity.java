@@ -8,14 +8,27 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.student.myapplicationxxx.Class_Object.Plan;
 import com.example.student.myapplicationxxx.Network.Net;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
+public class MainActivity extends AppCompatActivity
+implements
+        AdapterView.OnItemSelectedListener,
+        AdapterView.OnItemClickListener{
+    int 回傳plan=0;
     ImageButton settinglink;
     ImageButton messagelink;
+    private List<Plan> mPlanList = new ArrayList<>();
+    private ListView mListView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +54,14 @@ public class MainActivity extends AppCompatActivity {
 
         Intent in = new Intent();
         in.setClass(MainActivity.this, Start.class);
-        startActivity(in);
+        startActivityForResult(in,回傳plan);
         overridePendingTransition(R.anim.push_in,R.anim.push_out);
+    }
+    public void  settinglink(View v){
+
+    }
+
+    public void  messagelink(View v){
 
     }
 
@@ -90,5 +109,44 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+    private void initListView() {
+        mListView = (ListView) findViewById(R.id.onlinelist);
+        mListView.setAdapter(new OnlinListAdapter(this));
+        mListView.setOnItemClickListener((AdapterView.OnItemClickListener) this);
+    }
+    public List<Plan> getmPlanList() {
+        return mPlanList;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==回傳plan) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(MainActivity.this, data.getStringExtra("user_input"), Toast.LENGTH_SHORT).show();
+                initListView();
+                Plan plan = new Plan("organizer", "location");
+                mPlanList.add(plan);
+                OnlinListAdapter OnlinListAdapter = (OnlinListAdapter) mListView.getAdapter();
+                OnlinListAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
