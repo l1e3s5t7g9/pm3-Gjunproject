@@ -10,19 +10,24 @@ import java.util.List;
 
 public class Plan implements Serializable {
 
-    private String organizer;    // 發起人帳戶
-    private String location;     // 集散地點
-    private Calendar deadline;   // 截止時間
-    private String topic;        // 發起名目
-    private List<Goods> goods;  // 發起商品
-    private List<Order> orders; //訂單
-    public Plan(String organizer, String location, Calendar deadline, String topic, List<Goods> goods) {
+    private String organizer;       // 發起人帳戶
+    private String location;        // 集散地點
+    private Calendar deadline;      // 截止時間
+    private Calendar arrivaltime;   //預計送達時間
+    private String topic;           // 發起名目
+    private List<Goods> goods;      // 發起商品
+    private List<Order> orders;     //訂單
+
+    public Plan(String organizer, String location, Calendar deadline, Calendar arrivaltime, String topic, List<Goods> goods, List<Order> orders) {
         this.organizer = organizer;
         this.location = location;
         this.deadline = deadline;
+        this.arrivaltime = arrivaltime;
         this.topic = topic;
         this.goods = goods;
+        this.orders = orders;
     }
+
 
     public String getOrganizer() {
         return organizer;
@@ -48,6 +53,14 @@ public class Plan implements Serializable {
         this.deadline = deadline;
     }
 
+    public Calendar getArrivaltime() {
+        return deadline;
+    }
+
+    public void setArrivaltime(Calendar arrivaltime) {
+        this.arrivaltime = arrivaltime;
+    }
+
     public String getTopic() {
         return topic;
     }
@@ -71,6 +84,10 @@ public class Plan implements Serializable {
 
     public List<Goods> getgoodsList(){
         return goods;
+    }
+
+    public void setgoodsList(List<Goods> goods){
+        this.goods=goods;
     }
 
 //    public Goods setGoods(int g, Goods item) {

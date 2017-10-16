@@ -12,7 +12,7 @@ import java.util.Date;
 public class time {
     public static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");//定義好時間字串的格式
     // ====== 截止時間換算 ======
-    public static Calendar setDeadline(String t) {
+    public static Calendar settime(String t) {
         Calendar cal = Calendar.getInstance(); // 取得目前時間
         try {
             Date dt = sdf.parse(t);                              //將字串轉成Date型
@@ -23,7 +23,7 @@ public class time {
         return cal;
     }
 
-    public static Calendar setDeadline(int mm) {
+    public static Calendar settime(int mm) {
         Calendar cal = Calendar.getInstance(); // 取得目前時間
 //        cal.add(Calendar.HOUR, hh);        //小時+hh
         cal.add(Calendar.MINUTE, mm);      //分+mm

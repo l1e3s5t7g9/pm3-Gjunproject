@@ -7,8 +7,8 @@
 
     <!-- TODO: Update blank fragment layout -->
     <EditText
-        android:id="@+id/store"
-        android:hint="出貨店家"
+        android:id="@+id/topic"
+        android:hint="發起名目"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"

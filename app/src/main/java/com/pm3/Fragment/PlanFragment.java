@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.student.myapplicationxxx.R;
 import com.pm3.Class_Object.Goods;
 import com.pm3.Exception.MyDialogFragmentException;
-import com.example.student.myapplicationxxx.R;
 
 import java.util.Calendar;
 import java.util.List;
@@ -27,9 +27,10 @@ public class PlanFragment extends DialogFragment {
     private String topic;        // 發起名目
     private List<Goods> goods;  // 發起商品
 
-    private EditText et_store;
+    private EditText et_topic;
     private EditText et_location;
-    private EditText et_time;
+    private EditText et_deadline;
+    private EditText et_arrivaltime;
     private View mDialogView;
     private AlertDialog mDialog;
 
@@ -54,7 +55,7 @@ public class PlanFragment extends DialogFragment {
     private chouse okcancelHandler;
 
     public interface chouse{
-        void 新增專案確定(String 出貨店家,String 集散地點,int 時間);
+        void 新增專案確定(String 出貨店家,String 集散地點,int 截止時間,int 預計送達時間);
 
         void 新增專案取消();
 
@@ -84,18 +85,20 @@ public class PlanFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         try {
-                            et_store = (EditText) mDialogView.findViewById(R.id.store);
+                            et_topic = (EditText) mDialogView.findViewById(R.id.topic);
                             et_location = (EditText) mDialogView.findViewById(R.id.location);
-                            et_time= (EditText) mDialogView.findViewById(R.id.deadline);
-                            String 出貨店家=et_store.getText().toString();
+                            et_deadline= (EditText) mDialogView.findViewById(R.id.deadline);
+                            et_arrivaltime= (EditText) mDialogView.findViewById(R.id.arrivaltime);
+                            String 發起名目=et_topic.getText().toString();
                             String 集散地點=et_location.getText().toString();
-                            int 時間=Integer.parseInt(String.valueOf(et_time.getText()));
+                            int 截止時間=Integer.parseInt(String.valueOf(et_deadline.getText()));
+                            int 預計送達時間=Integer.parseInt(String.valueOf(et_arrivaltime.getText()));
                             if(false){
                                 throw new Exception("價格必須介於0~1000之間");
 
                             }
                             else{
-                                okcancelHandler.新增專案確定(出貨店家,集散地點,時間);
+                                okcancelHandler.新增專案確定(發起名目,集散地點,截止時間,預計送達時間);
                             }
                         } catch (NumberFormatException e) {
                             okcancelHandler.處理訊息("價格必需是數字");

@@ -1,4 +1,4 @@
-package com.pm3;
+package com.pm3.Adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.pm3.Class_Object.Goods;
 import com.example.student.myapplicationxxx.R;
+import com.pm3.Start;
 
 /**
  * Created by student on 2017/10/12.

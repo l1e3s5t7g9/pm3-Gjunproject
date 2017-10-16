@@ -38,7 +38,6 @@
         android:id="@+id/editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
 
@@ -62,23 +61,22 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
 
+        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/setting2"
         android:onClick="settinglink"
+        app:layout_constraintBottom_toTopOf="@+id/messagelink"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/messagelink" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/messagelink"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/messagew"
@@ -94,31 +92,93 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/button"
 
+        android:layout_marginStart="8dp"
+        android:background="@drawable/button"
         android:onClick="start"
-        android:text="開始訂購"
+        android:text="發起訂購"
         android:textColor="#FFFFFF"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
-
     <ListView
         android:id="@+id/onlinelist"
         android:layout_width="0dp"
         android:layout_height="0dp"
-
-
-        android:layout_marginTop="8dp"
         android:background="@android:drawable/alert_light_frame"
         android:text=""
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/start"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ImageViewIcon" />
+        android:layout_marginTop="28dp"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout_main" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout_main"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:drawable/alert_light_frame"
+        android:orientation="horizontal"
+        android:paddingBottom="4dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ImageViewIcon">
+
+        <TextView
+            android:id="@+id/itemId"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0"
+            android:hint=""
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/itemtopic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="名目"
+            android:gravity="center"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/itemlocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="地點"
+            android:gravity="center"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/itemdeadline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="截止時間"
+            android:gravity="center"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/itemarrivaltime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="貨到時間"
+            android:gravity="center"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+
 </android.support.constraint.ConstraintLayout>

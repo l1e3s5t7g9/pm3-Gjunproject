@@ -1,4 +1,4 @@
-package com.pm3;
+package com.pm3.Adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.example.student.myapplicationxxx.R;
 import com.pm3.Class_Object.Plan;
+import com.pm3.MainActivity;
 
 import static com.pm3.Tools.time.calendar2string;
 
@@ -62,7 +63,7 @@ public class OnlinListAdapter extends BaseAdapter {
         tvitemtopic.setText(plan.getTopic());
         tvitemlocation.setText(plan.getLocation());
         tvitemdeadline.setText(calendar2string(plan.getDeadline()));
-        tvitemarrivaltime.setText(calendar2string(plan.getDeadline()));
+        tvitemarrivaltime.setText(calendar2string(plan.getArrivaltime()));
         System.out.println(v.getBackground());
         return v;
     }

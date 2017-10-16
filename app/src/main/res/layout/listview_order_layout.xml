@@ -12,7 +12,7 @@
     android:paddingRight="12dp">
 
     <TextView
-        android:id="@+id/itemId"
+        android:id="@+id/order_itemId"
         android:layout_width="0dp"
         android:layout_weight="0"
         android:hint=""
@@ -20,37 +20,37 @@
         android:textSize="20sp"/>
 
     <TextView
-        android:id="@+id/itemtopic"
+        android:id="@+id/order_itemGoods"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:hint="名目"
+        android:hint="商品"
         android:gravity="center"
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
 
     <TextView
-        android:id="@+id/itemlocation"
+        android:id="@+id/order_itemPrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="地點"
+        android:hint="單價"
         android:gravity="center"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/itemdeadline"
+        android:id="@+id/order_itemQuantity"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:hint="截止時間"
+        android:hint="數量"
         android:gravity="center"
         android:textSize="20sp" />
     <TextView
-        android:id="@+id/itemarrivaltime"
+        android:id="@+id/order_itemCommente"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:hint="貨到時間"
+        android:hint="註解"
         android:gravity="center"
         android:textSize="20sp" />
 </LinearLayout>

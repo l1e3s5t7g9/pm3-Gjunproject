@@ -12,11 +12,13 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.student.myapplicationxxx.R;
+import com.pm3.Adapter.MyListAdapter;
 import com.pm3.Class_Object.Goods;
+import com.pm3.Class_Object.Order;
 import com.pm3.Class_Object.Plan;
 import com.pm3.Fragment.GoodsFragment;
 import com.pm3.Fragment.PlanFragment;
-import com.example.student.myapplicationxxx.R;
 import com.pm3.Tools.time;
 
 import java.util.ArrayList;
@@ -114,9 +116,9 @@ public class Start extends AppCompatActivity
     }
 
     @Override
-    public void 新增專案確定(String 出貨店家,String 集散地點,int 時間) {
+    public void 新增專案確定(String 發起名目,String 集散地點,int 截止時間,int 預計送達時間) {
         處理訊息("收到確定 plan");
-        Plan plan=輸入資料toNewPlan(出貨店家,集散地點,時間);
+        Plan plan=輸入資料toNewPlan(發起名目,集散地點,截止時間,預計送達時間);
         Intent data = new Intent();
         Bundle bundle = new Bundle();
         bundle.putSerializable("plan",plan);
@@ -154,15 +156,17 @@ public class Start extends AppCompatActivity
 
     }
 
-    private Plan 輸入資料toNewPlan(String 出貨店家,String 集散地點,int 時間){
+    private Plan 輸入資料toNewPlan(String 發起名目,String 集散地點,int 截止時間,int 預計送達時間){
         String organizer="帳戶";
         String location=集散地點;
-        Calendar deadline= time.setDeadline(時間);
-        String topic=出貨店家;
+        Calendar deadline= time.settime(截止時間);
+        Calendar arrivaltime= time.settime(截止時間+預計送達時間);
+        String topic=發起名目;
         List<Goods> goods=mGoodsList;
+        List<Order> order=new ArrayList<>();
 
 
 
-        return new Plan(organizer, location,deadline,topic,goods);
+        return new Plan(organizer, location,arrivaltime,deadline,topic,goods,order);
     }
 }
