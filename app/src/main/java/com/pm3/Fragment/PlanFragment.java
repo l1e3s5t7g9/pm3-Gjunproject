@@ -1,29 +1,39 @@
-package com.example.student.myapplicationxxx.Fragment;
+package com.pm3.Fragment;
 
 import android.app.Dialog;
-import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.student.myapplicationxxx.Class_Object.Goods;
-import com.example.student.myapplicationxxx.Exception.MyDialogFragmentException;
+import com.pm3.Class_Object.Goods;
+import com.pm3.Exception.MyDialogFragmentException;
 import com.example.student.myapplicationxxx.R;
 
+import java.util.Calendar;
+import java.util.List;
+
 /**
- * Created by student on 2017/10/12.
+ * Created by TiGerTomb on 2017/10/12.
  */
 
-public class GoodsFragment extends DialogFragment {
-    private EditText goods;
-    private EditText price;
+public class PlanFragment extends DialogFragment {
+    private String organizer;    // 發起人帳戶
+    private String location;     // 集散地點
+    private Calendar deadline;   // 截止時間
+    private String topic;        // 發起名目
+    private List<Goods> goods;  // 發起商品
+
+    private EditText et_store;
+    private EditText et_location;
+    private EditText et_time;
     private View mDialogView;
     private AlertDialog mDialog;
 
-    public GoodsFragment() {
+    public PlanFragment() {
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,6 +41,7 @@ public class GoodsFragment extends DialogFragment {
         initOkcancelHandler();
         initdialogView();
         initDialog();
+
         return mDialog;
     }
 
@@ -38,14 +49,14 @@ public class GoodsFragment extends DialogFragment {
     private void initdialogView() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        mDialogView = inflater.inflate(R.layout.fragment_goods, null);
+        mDialogView = inflater.inflate(R.layout.fragment_plan, null);
     }
     private chouse okcancelHandler;
 
     public interface chouse{
-        void 新增商品確定(Goods goods);
+        void 新增專案確定(String 出貨店家,String 集散地點,int 時間);
 
-        void 新增商品取消();
+        void 新增專案取消();
 
         void 處理訊息(String String);
     }
@@ -67,23 +78,24 @@ public class GoodsFragment extends DialogFragment {
 
     private void initDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("新增商品")
+        builder.setTitle("新增專案")
                 .setView(mDialogView)
                 .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         try {
-                            goods = (EditText) mDialogView.findViewById(R.id.goods);
-                            price = (EditText) mDialogView.findViewById(R.id.price);
-                            int 價格 =(int)Float.parseFloat(price.getText().toString());
-
-                            if(價格<0||價格>1000){
+                            et_store = (EditText) mDialogView.findViewById(R.id.store);
+                            et_location = (EditText) mDialogView.findViewById(R.id.location);
+                            et_time= (EditText) mDialogView.findViewById(R.id.deadline);
+                            String 出貨店家=et_store.getText().toString();
+                            String 集散地點=et_location.getText().toString();
+                            int 時間=Integer.parseInt(String.valueOf(et_time.getText()));
+                            if(false){
                                 throw new Exception("價格必須介於0~1000之間");
 
                             }
                             else{
-                                Goods goods = 輸入資料toNewGoods();
-                                okcancelHandler.新增商品確定(goods);
+                                okcancelHandler.新增專案確定(出貨店家,集散地點,時間);
                             }
                         } catch (NumberFormatException e) {
                             okcancelHandler.處理訊息("價格必需是數字");
@@ -95,23 +107,12 @@ public class GoodsFragment extends DialogFragment {
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        okcancelHandler.新增商品取消();
+                        okcancelHandler.新增專案取消();
                     }
                 });
         mDialog = builder.create();
         mDialog.setCanceledOnTouchOutside(false);// 设置点击屏幕Dialog不消失
     }
 
-    private Goods 輸入資料toNewGoods(){
 
-        EditText et_goods = (EditText) mDialogView.findViewById(R.id.goods);
-        EditText et_price = (EditText) mDialogView.findViewById(R.id.price);
-        String goods=et_goods.getText().toString();
-        float price =Float.parseFloat(et_price.getText().toString());
-        return new Goods(goods,goods,price);
-
-
-
-
-    }
 }

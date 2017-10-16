@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.student.myapplicationxxx.Fragment.GoodsFragment">
+    tools:context="com.pm3.Fragment.GoodsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <EditText

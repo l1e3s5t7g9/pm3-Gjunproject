@@ -1,4 +1,4 @@
-package com.example.student.myapplicationxxx.Network;
+package com.pm3.Network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

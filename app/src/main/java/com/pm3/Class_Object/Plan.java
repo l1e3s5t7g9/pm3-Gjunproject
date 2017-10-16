@@ -1,4 +1,4 @@
-package com.example.student.myapplicationxxx.Class_Object;
+package com.pm3.Class_Object;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -15,6 +15,7 @@ public class Plan implements Serializable {
     private Calendar deadline;   // 截止時間
     private String topic;        // 發起名目
     private List<Goods> goods;  // 發起商品
+    private List<Order> orders; //訂單
     public Plan(String organizer, String location, Calendar deadline, String topic, List<Goods> goods) {
         this.organizer = organizer;
         this.location = location;
@@ -66,6 +67,10 @@ public class Plan implements Serializable {
 
     public Goods getGoods(int g) {
         return goods.get(g);
+    }
+
+    public List<Goods> getgoodsList(){
+        return goods;
     }
 
 //    public Goods setGoods(int g, Goods item) {

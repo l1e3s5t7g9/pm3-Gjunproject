@@ -1,4 +1,4 @@
-package com.example.student.myapplicationxxx.Class_Object;
+package com.pm3.Class_Object;
 
 import java.io.Serializable;
 

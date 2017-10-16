@@ -1,4 +1,4 @@
-package com.example.student.myapplicationxxx;
+package com.pm3;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +12,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.student.myapplicationxxx.Class_Object.Goods;
-import com.example.student.myapplicationxxx.Class_Object.Plan;
-import com.example.student.myapplicationxxx.Fragment.GoodsFragment;
-import com.example.student.myapplicationxxx.Fragment.PlanFragment;
-import com.example.student.myapplicationxxx.Tools.time;
+import com.pm3.Class_Object.Goods;
+import com.pm3.Class_Object.Plan;
+import com.pm3.Fragment.GoodsFragment;
+import com.pm3.Fragment.PlanFragment;
+import com.example.student.myapplicationxxx.R;
+import com.pm3.Tools.time;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,6 +88,7 @@ public class Start extends AppCompatActivity
 
     // ==========回上一頁==========
     public void cancel(View v) {
+        setResult(RESULT_CANCELED);
         finish();
         overridePendingTransition(R.anim.push_in, R.anim.push_out);
     }

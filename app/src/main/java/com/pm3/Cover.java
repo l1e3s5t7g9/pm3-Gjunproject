@@ -1,8 +1,10 @@
-package com.example.student.myapplicationxxx;
+package com.pm3;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.student.myapplicationxxx.R;
 
 public class Cover extends AppCompatActivity {
 

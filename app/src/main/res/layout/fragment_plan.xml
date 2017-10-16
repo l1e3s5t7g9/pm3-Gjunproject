@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.student.myapplicationxxx.Fragment.GoodsFragment">
+    tools:context="com.pm3.Fragment.GoodsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <EditText
@@ -21,12 +21,18 @@
         android:inputType="textEmailAddress"
         android:layout_margin="4dp"/>
     <EditText
-        android:id="@+id/time"
-        android:hint="截止時間"
+        android:id="@+id/deadline"
+        android:hint="截止時間(幾分鐘後)"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:layout_margin="4dp"/>
-
+    <EditText
+        android:id="@+id/arrivaltime"
+        android:hint="貨到時間(截止後幾分鐘)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:layout_margin="4dp"/>
 
 </LinearLayout>

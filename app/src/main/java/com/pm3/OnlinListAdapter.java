@@ -1,19 +1,25 @@
-package com.example.student.myapplicationxxx;
+package com.pm3;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.student.myapplicationxxx.Class_Object.Plan;
+import com.example.student.myapplicationxxx.R;
+import com.pm3.Class_Object.Plan;
 
-import static com.example.student.myapplicationxxx.Tools.time.calendar2string;
+import static com.pm3.Tools.time.calendar2string;
 
 /**
  * Created by TiGerTomb on 2017/10/13.
  */
 
 public class OnlinListAdapter extends BaseAdapter {
+    TextView tvItemId;
+    TextView tvitemtopic;
+    TextView tvitemlocation;
+    TextView tvitemdeadline;
+    TextView tvitemarrivaltime;
 
     private MainActivity activity;
 
@@ -42,21 +48,23 @@ public class OnlinListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View covnerview, ViewGroup parent) {
 
-        View v = activity.getLayoutInflater().inflate(R.layout.listview_layout,null);
+        View v = activity.getLayoutInflater().inflate(R.layout.listview_plan_layout,null);
 
         TextView tvItemId=(TextView)v.findViewById(R.id.itemId);
-        TextView tvItemStore=(TextView)v.findViewById(R.id.itemStore);
-        TextView tvItemGoods=(TextView)v.findViewById(R.id.itemGoods);
-        TextView tvItemPrice=(TextView)v.findViewById(R.id.itemPrice);
+        TextView tvitemtopic=(TextView)v.findViewById(R.id.itemtopic);
+        TextView tvitemlocation=(TextView)v.findViewById(R.id.itemlocation);
+        TextView tvitemdeadline=(TextView)v.findViewById(R.id.itemdeadline);
+        TextView tvitemarrivaltime=(TextView)v.findViewById(R.id.itemarrivaltime);
 
         Plan plan = activity.getmPlanList().get(position);
 
         tvItemId.setText("id");
-        tvItemStore.setText(plan.getTopic());
-        tvItemGoods.setText(plan.getLocation());
-        tvItemPrice.setText(calendar2string(plan.getDeadline()));
+        tvitemtopic.setText(plan.getTopic());
+        tvitemlocation.setText(plan.getLocation());
+        tvitemdeadline.setText(calendar2string(plan.getDeadline()));
+        tvitemarrivaltime.setText(calendar2string(plan.getDeadline()));
         System.out.println(v.getBackground());
         return v;
     }
-}
 
+}

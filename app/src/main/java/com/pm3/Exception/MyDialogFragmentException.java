@@ -1,4 +1,4 @@
-package com.example.student.myapplicationxxx.Exception;
+package com.pm3.Exception;
 
 /**
  * Created by student on 2017/10/12.

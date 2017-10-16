@@ -14,39 +14,39 @@
     <TextView
         android:id="@+id/itemId"
         android:layout_width="0dp"
-        android:layout_weight="0.2"
-        android:hint="id"
+        android:layout_weight="0"
+        android:hint=""
+        android:layout_height="0dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/itemtopic"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:hint="名目"
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
 
     <TextView
-        android:id="@+id/itemStore"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:hint="店家"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"/>
-
-    <TextView
-        android:id="@+id/itemGoods"
+        android:id="@+id/itemlocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="商品"
+        android:hint="地點"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/itemPrice"
+        android:id="@+id/itemdeadline"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:hint="價格"
-        android:gravity="right"
+        android:hint="截止時間"
         android:textSize="20sp" />
     <TextView
+        android:id="@+id/itemarrivaltime"
         android:layout_width="0dp"
-        android:layout_weight="0.2"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:hint="元"
+        android:hint="貨到時間"
         android:textSize="20sp" />
 </LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayout01"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:paddingBottom="4dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
+
+    <TextView
+        android:id="@+id/itemId"
+        android:layout_width="0dp"
+        android:layout_weight="0"
+        android:hint=""
+        android:layout_height="0dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/itemStore"
+        android:layout_width="0dp"
+        android:layout_weight="0"
+        android:hint=""
+        android:layout_height="0dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/itemGoods"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="商品"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/itemPrice"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:hint="價格"
+        android:gravity="right"
+        android:textSize="20sp" />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="0.2"
+        android:layout_height="wrap_content"
+        android:hint="元"
+        android:textSize="20sp" />
+</LinearLayout>
