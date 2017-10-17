@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -18,28 +19,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.student.myapplicationxxx.R;
+import com.google.gson.Gson;
 import com.pm3.Account.Info;
 import com.pm3.Account.Sign;
 import com.pm3.Adapter.OnlinListAdapter;
 import com.pm3.Class_Object.Plan;
 import com.pm3.Network.Net;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-implements
+        implements
         AdapterView.OnItemSelectedListener,
-        AdapterView.OnItemClickListener{
-    int 回傳plan=1;
+        AdapterView.OnItemClickListener {
+
+    int 回傳plan = 1;
     ImageButton settinglink;
     ImageButton messagelink;
     private List<Plan> mPlanList = new ArrayList<>();
+    private List<Plan> mPrivatePlanList = new ArrayList<>();
     private ListView mListView;
 
     Sign gSign;
-
+    Button START;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent in = new Intent();
@@ -60,20 +63,49 @@ implements
 
         settinglink = (ImageButton) findViewById(R.id.settinglink);
         messagelink = (ImageButton) findViewById(R.id.messagelink);
+
+        check();
+
+
+    }
+    public void check(){
+        //===========判定是否有自己的團購=======
+
+        START=(Button)findViewById(R.id.start);
+        if(mPrivatePlanList.size()==0){
+            START.setText("發起團購");
+        }else
+        {
+            START.setText("我的團購");
+        }
+
     }
 
     public void start(View v) {
+        if(mPrivatePlanList.size()==0) {
+            Intent in = new Intent();
+            in.setClass(MainActivity.this, Start.class);
+            startActivityForResult(in, 回傳plan);
+            overridePendingTransition(R.anim.push_in, R.anim.push_out);
+        }
+        else{
+            Plan plan=mPrivatePlanList.get(mPrivatePlanList.size()-1);
+            Intent data = new Intent();
+            data.setClass(MainActivity.this, PlanList.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("privatplan", plan);
+            data.putExtras(bundle);
+            startActivity(data);
 
-        Intent in = new Intent();
-        in.setClass(MainActivity.this, Start.class);
-        startActivityForResult(in,回傳plan);
-        overridePendingTransition(R.anim.push_in,R.anim.push_out);
+            overridePendingTransition(R.anim.push_in, R.anim.push_out);
+        }
     }
-    public void  settinglink(View v){
+
+    public void settinglink(View v) {
 
     }
 
-    public void  messagelink(View v){
+    public void messagelink(View v) {
 
     }
 
@@ -111,7 +143,7 @@ implements
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
-                        overridePendingTransition(R.anim.push_in,R.anim.push_out);
+                        overridePendingTransition(R.anim.push_in, R.anim.push_out);
                     }
                 })
                 .setNegativeButton("繼續", new DialogInterface.OnClickListener() {
@@ -122,65 +154,68 @@ implements
                 })
                 .show();
     }
+
+    //ListView 初始化設定
     private void initListView() {
         mListView = (ListView) findViewById(R.id.onlinelist);
         mListView.setAdapter(new OnlinListAdapter(this));
         mListView.setOnItemClickListener(this);
     }
+
     public List<Plan> getmPlanList() {
         return mPlanList;
     }
 
+
+    //回傳資料後...
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-
-        // ====== Get Account Information ======
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == Sign.RC_SIGN_IN) {
 
             // ====== 取得帳戶資訊並放置於 Info class ======
             gSign.Result(data);
 
-        }else if (requestCode==回傳plan) {
+        } else if (requestCode == 回傳plan) {//收Plan的資料
             if (resultCode == RESULT_OK) {
                 initListView();
                 Plan plan = (Plan) data.getSerializableExtra("plan");
-
+                mPrivatePlanList.add(plan);
+                check();
 //                plan.addGoods(new Goods("asdnji","nnjo",121));
 //                plan.addGoods(new Goods("asdn1253","nnj7777",12));
 //                plan.addGoods(new Goods("asdn1250003","nnj770077",999));
                 Gson gson = new Gson();
-                String 上傳plan=gson.toJson(plan);
-
-                Plan 下載plan=gson.fromJson(上傳plan,Plan.class);
-
+                String 上傳plan = gson.toJson(plan);
+//================上傳plan資料======================
 
 
+//================下載plan資料======================
+                Plan 下載plan = gson.fromJson(上傳plan, Plan.class);
                 mPlanList.add(下載plan);
                 OnlinListAdapter OnlinListAdapter = (OnlinListAdapter) mListView.getAdapter();
                 OnlinListAdapter.notifyDataSetChanged();
-            }else if(requestCode == RESULT_CANCELED){
+            } else if (requestCode == RESULT_CANCELED) {
                 ;
             }
         }
     }
 
-
+    //點選ListView的項目
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        處理訊息("點選了第" + (position+1) + "項");
+        處理訊息("點選了第" + (position + 1) + "項");
         //new一個intent物件，並指定Activity切換的class
         Intent intent = new Intent();
-        intent.setClass(MainActivity.this,Follow.class);
+        intent.setClass(MainActivity.this, Follow.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("plan",mPlanList.get(position));
+        bundle.putSerializable("plan", mPlanList.get(position));
         intent.putExtras(bundle);
         startActivity(intent);
     }
 
+    //吐司方法
     public void 處理訊息(String string) {
         Toast toast = Toast.makeText(MainActivity.this, string, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -196,10 +231,6 @@ implements
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
-
-
-
 
 
     public final void runOnUiTextView(final int id, final CharSequence cs) {
@@ -260,8 +291,6 @@ implements
         }).start();
 
     }
-
-
 
 
 }

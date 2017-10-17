@@ -1,5 +1,7 @@
 package com.pm3.Class_Object;
 
+import com.pm3.Account.Info;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
@@ -18,8 +20,8 @@ public class Plan implements Serializable {
     private List<Goods> goods;      // 發起商品
     private List<Order> orders;     //訂單
 
-    public Plan(String organizer, String location, Calendar deadline, Calendar arrivaltime, String topic, List<Goods> goods, List<Order> orders) {
-        this.organizer = organizer;
+    public Plan(String location, Calendar deadline, Calendar arrivaltime, String topic, List<Goods> goods, List<Order> orders) {
+        this.organizer = Info.gDisplayNameNick;
         this.location = location;
         this.deadline = deadline;
         this.arrivaltime = arrivaltime;
@@ -82,14 +84,21 @@ public class Plan implements Serializable {
         return goods.get(g);
     }
 
-    public List<Goods> getgoodsList(){
+    public List<Goods> getgoodsList() {
         return goods;
     }
 
-    public void setgoodsList(List<Goods> goods){
-        this.goods=goods;
+    public void setgoodsList(List<Goods> goods) {
+        this.goods = goods;
     }
 
+    public List<Order> getordersList() {
+        return orders;
+    }
+
+    public void setordersList(List<Order> orders) {
+        this.orders = orders;
+    }
 //    public Goods setGoods(int g, Goods item) {
 //        return goods.set(g, item);
 //    }

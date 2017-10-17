@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.student.myapplicationxxx.R;
 
-public class Cover extends AppCompatActivity {
+public class Cover extends AppCompatActivity {              //封面畫面
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,5 +25,5 @@ public class Cover extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         ;
-    }
+    }//讓Back鍵失去功能
 }

@@ -18,7 +18,14 @@
         android:hint=""
         android:layout_height="0dp"
         android:textSize="20sp"/>
-
+    <TextView
+        android:id="@+id/order_itemSubscriber"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:hint="訂購者"
+        android:gravity="center"
+        android:textSize="20sp" />
     <TextView
         android:id="@+id/order_itemGoods"
         android:layout_width="0dp"
@@ -37,14 +44,6 @@
         android:gravity="center"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/order_itemQuantity"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:hint="數量"
-        android:gravity="center"
-        android:textSize="20sp" />
     <TextView
         android:id="@+id/order_itemCommente"
         android:layout_width="0dp"

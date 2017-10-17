@@ -11,17 +11,16 @@ import com.pm3.Start;
 
 /**
  * Created by student on 2017/10/12.
+ * 建立表單時，畫面上的listVuew會使用到
  */
 
 public class MyListAdapter extends BaseAdapter {
 
     private Start activity;
 
-    public MyListAdapter(Start activity){
-        this.activity =activity;
+    public MyListAdapter(Start activity) {
+        this.activity = activity;
     }
-
-
 
 
     @Override
@@ -42,15 +41,16 @@ public class MyListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View covnerview, ViewGroup parent) {
 
-        View v = activity.getLayoutInflater().inflate(R.layout.listview_goods_layout,null);
+        View v = activity.getLayoutInflater().inflate(R.layout.listview_goods_layout, null);//格式ｘｍｌ
 
-        TextView tvItemId=(TextView)v.findViewById(R.id.itemId);
-        TextView tvItemStore=(TextView)v.findViewById(R.id.itemStore);
-        TextView tvItemGoods=(TextView)v.findViewById(R.id.itemGoods);
-        TextView tvItemPrice=(TextView)v.findViewById(R.id.itemPrice);
+        TextView tvItemId = (TextView) v.findViewById(R.id.itemId);
+        TextView tvItemStore = (TextView) v.findViewById(R.id.itemStore);
+        TextView tvItemGoods = (TextView) v.findViewById(R.id.itemGoods);
+        TextView tvItemPrice = (TextView) v.findViewById(R.id.itemPrice);
 
-        Goods goods = activity.getmGoodsList().get(position);
+        Goods goods = activity.getmGoodsList().get(position);//goods資料來源
 
+        //設定資料//
         tvItemId.setText("id");
         tvItemStore.setText(goods.getstore());
         tvItemGoods.setText(goods.getgoods());

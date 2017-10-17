@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.student.myapplicationxxx.R;
+import com.pm3.Account.Info;
 import com.pm3.Adapter.FollowListAdapter;
 import com.pm3.Class_Object.Goods;
 import com.pm3.Class_Object.Order;
@@ -26,7 +27,7 @@ public class Follow extends AppCompatActivity
 
     private ListView mListView;
     private List<Goods> mGoodsList = new ArrayList<>();
-    private TextView tv_topic,tv_location,tv_deadline,tv_arrivaltime;
+    private TextView tv_topic, tv_location, tv_deadline, tv_arrivaltime;
     private List<Order> mOrderList = new ArrayList<>();
     private List<Integer> mQuantityList = new ArrayList<>();
     private List<String> mCommenteList = new ArrayList<>();
@@ -38,18 +39,17 @@ public class Follow extends AppCompatActivity
         Intent intent = this.getIntent();
         //取得傳遞過來的資料
         Plan plan = (Plan) intent.getSerializableExtra("plan");
-        tv_topic=(TextView)findViewById(R.id.名目);
-        tv_location=(TextView)findViewById(R.id.地點);
-        tv_deadline=(TextView)findViewById(R.id.截止時間);
-        tv_arrivaltime=(TextView)findViewById(R.id.預計送達時間);
+        tv_topic = (TextView) findViewById(R.id.名目);
+        tv_location = (TextView) findViewById(R.id.地點);
+        tv_deadline = (TextView) findViewById(R.id.截止時間);
+        tv_arrivaltime = (TextView) findViewById(R.id.預計送達時間);
         tv_topic.setText(plan.getTopic());
         tv_location.setText(plan.getLocation());
         tv_deadline.setText(calendar2string(plan.getDeadline()));
         tv_arrivaltime.setText(calendar2string(plan.getArrivaltime()));
 
 
-
-        mGoodsList=plan.getgoodsList();
+        mGoodsList = plan.getgoodsList();
 
 
         creatList();
@@ -71,35 +71,58 @@ public class Follow extends AppCompatActivity
         overridePendingTransition(R.anim.push_in, R.anim.push_out);
     }
 
+    //===========follow_plan==========
 
+    public void follow_plan(View v){
+        OrderListAddOrder();
+    }
 
+    public void OrderListAddOrder(){
+        String subscriber= Info.gDisplayNameNick;
+        Goods goods;
+        String notes;
 
+        for(int i=0;i<mQuantityList.size();i++){
+            int 數量 = mQuantityList.get(i);
+            for(int j=0;j<數量;j++){
+                goods=mGoodsList.get(i);
+                notes=mCommenteList.get(i);
+
+                Order order=new Order(subscriber,goods,notes);
+                mOrderList.add(order);
+            }
+        }
+    }
 
 
     public List<Goods> getmGoodsList() {
         return mGoodsList;
     }
+
     public List<Integer> getmQuantityList() {
         return mQuantityList;
     }
+
     public List<String> getmCommenteList() {
         return mCommenteList;
     }
 
-    private void creatList(){
-        for(int i=0;i<mGoodsList.size();i++){
+    private void creatList() {
+        for (int i = 0; i < mGoodsList.size(); i++) {
             mQuantityList.add(0);
             mCommenteList.add("");
         }
     }
 
-
+    //ListView 初始化設定
     private void initListView() {
         mListView = (ListView) findViewById(R.id.FollowlistView);
         mListView.setAdapter(new FollowListAdapter(this));
         mListView.setOnItemClickListener(this);
     }
 
+
+    //點選ListView的項目
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 

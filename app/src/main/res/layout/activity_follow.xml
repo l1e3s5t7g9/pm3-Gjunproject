@@ -33,7 +33,7 @@
     <Button
 
 
-        android:id="@+id/ok"
+        android:id="@+id/follow_plan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -42,7 +42,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/button"
-        android:onClick="ok"
+        android:onClick="follow_plan"
         android:text="跟單"
         android:textColor="#FFFFFF"
         android:textSize="20dp"

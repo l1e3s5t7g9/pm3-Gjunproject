@@ -11,17 +11,16 @@ import com.pm3.Follow;
 
 /**
  * Created by student on 2017/10/12.
+ * 在跟單畫面上的listVuew會使用到
  */
 
 public class FollowListAdapter extends BaseAdapter {
 
     private Follow activity;
 
-    public FollowListAdapter(Follow activity){
-        this.activity =activity;
+    public FollowListAdapter(Follow activity) {
+        this.activity = activity;
     }
-
-
 
 
     @Override
@@ -42,21 +41,23 @@ public class FollowListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View covnerview, ViewGroup parent) {
 
-        View v = activity.getLayoutInflater().inflate(R.layout.listview_order_layout,null);
+        View v = activity.getLayoutInflater().inflate(R.layout.listview_follow_layout, null);//格式ｘｍｌ
 
-        TextView tvItemId=(TextView)v.findViewById(R.id.order_itemId);
-        TextView tvItemGoods=(TextView)v.findViewById(R.id.order_itemGoods);
-        TextView tvItemPrice=(TextView)v.findViewById(R.id.order_itemPrice);
-        TextView tvItemQuantity=(TextView)v.findViewById(R.id.order_itemQuantity);
-        TextView tvItemCommente=(TextView)v.findViewById(R.id.order_itemCommente);
+        TextView tvItemId = (TextView) v.findViewById(R.id.follow_itemId);
+        TextView tvItemGoods = (TextView) v.findViewById(R.id.follow_itemGoods);
+        TextView tvItemPrice = (TextView) v.findViewById(R.id.follow_itemPrice);
+        TextView tvItemQuantity = (TextView) v.findViewById(R.id.follow_itemQuantity);
+        TextView tvItemCommente = (TextView) v.findViewById(R.id.follow_itemCommente);
 
-        Goods goods = activity.getmGoodsList().get(position);
-        Integer quantity = activity.getmQuantityList().get(position);
-        String Commente = activity.getmCommenteList().get(position);
+        Goods goods = activity.getmGoodsList().get(position);                              //goods資料來源
+        Integer quantity = activity.getmQuantityList().get(position);                      //數量
+        String Commente = activity.getmCommenteList().get(position);                       //註解
 
+
+        //設定資料//
         tvItemId.setText("id");
         tvItemGoods.setText(goods.getgoods());
-        tvItemPrice.setText(String.valueOf(goods.getprice())+"");
+        tvItemPrice.setText(String.valueOf(goods.getprice()) + "");
         tvItemQuantity.setText(String.valueOf(quantity));
         tvItemCommente.setText(Commente);
         return v;

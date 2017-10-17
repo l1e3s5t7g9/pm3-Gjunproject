@@ -33,8 +33,8 @@ public class Start extends AppCompatActivity
 
     private ListView mListView;
     private List<Goods> mGoodsList = new ArrayList<>();
-
     private List<Plan> mPlanList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +56,10 @@ public class Start extends AppCompatActivity
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mGoodsList.size()>0){
+                if (mGoodsList.size() > 0) {
                     DialogFragment dialog = new PlanFragment();
                     dialog.show(getSupportFragmentManager(), "PlanFragment");
-                }
-                else{
+                } else {
                     處理訊息("至少要有一筆商品");
                 }
 
@@ -82,6 +81,7 @@ public class Start extends AppCompatActivity
         return mPlanList;
     }
 
+    //ListView 初始化設定
     private void initListView() {
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(new MyListAdapter(this));
@@ -116,12 +116,12 @@ public class Start extends AppCompatActivity
     }
 
     @Override
-    public void 新增專案確定(String 發起名目,String 集散地點,int 截止時間,int 預計送達時間) {
+    public void 新增專案確定(String 發起名目, String 集散地點, int 截止時間, int 預計送達時間) {
         處理訊息("收到確定 plan");
-        Plan plan=輸入資料toNewPlan(發起名目,集散地點,截止時間,預計送達時間);
+        Plan plan = 輸入資料toNewPlan(發起名目, 集散地點, 截止時間, 預計送達時間);
         Intent data = new Intent();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("plan",plan);
+        bundle.putSerializable("plan", plan);
 
         data.putExtras(bundle);
         setResult(RESULT_OK, data);
@@ -141,10 +141,12 @@ public class Start extends AppCompatActivity
         toast.show();
     }
 
+    //點選ListView的項目
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        處理訊息("點選了第" + (position+1) + "項");
+        處理訊息("點選了第" + (position + 1) + "項");
     }
+
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -156,17 +158,16 @@ public class Start extends AppCompatActivity
 
     }
 
-    private Plan 輸入資料toNewPlan(String 發起名目,String 集散地點,int 截止時間,int 預計送達時間){
-        String organizer="帳戶";
-        String location=集散地點;
-        Calendar deadline= time.settime(截止時間);
-        Calendar arrivaltime= time.settime(截止時間+預計送達時間);
-        String topic=發起名目;
-        List<Goods> goods=mGoodsList;
-        List<Order> order=new ArrayList<>();
+    //將資料存入Plan
+    private Plan 輸入資料toNewPlan(String 發起名目, String 集散地點, int 截止時間, int 預計送達時間) {
+        String location = 集散地點;
+        Calendar deadline = time.settime(截止時間);
+        Calendar arrivaltime = time.settime(截止時間 + 預計送達時間);
+        String topic = 發起名目;
+        List<Goods> goods = mGoodsList;
+        List<Order> order = new ArrayList<>();
 
 
-
-        return new Plan(organizer, location,deadline,arrivaltime,topic,goods,order);
+        return new Plan(location, deadline, arrivaltime, topic, goods, order);
     }
 }
