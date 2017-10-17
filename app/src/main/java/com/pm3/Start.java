@@ -167,6 +167,6 @@ public class Start extends AppCompatActivity
 
 
 
-        return new Plan(organizer, location,arrivaltime,deadline,topic,goods,order);
+        return new Plan(organizer, location,deadline,arrivaltime,topic,goods,order);
     }
 }

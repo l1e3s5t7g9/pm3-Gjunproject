@@ -54,7 +54,7 @@ public class Plan implements Serializable {
     }
 
     public Calendar getArrivaltime() {
-        return deadline;
+        return arrivaltime;
     }
 
     public void setArrivaltime(Calendar arrivaltime) {

@@ -48,8 +48,12 @@ public class Follow extends AppCompatActivity
         tv_arrivaltime.setText(calendar2string(plan.getArrivaltime()));
 
 
-        creatList();
+
         mGoodsList=plan.getgoodsList();
+
+
+        creatList();
+
         initListView();
         FollowListAdapter FollowListAdapter = (FollowListAdapter) mListView.getAdapter();
         FollowListAdapter.notifyDataSetChanged();
@@ -83,7 +87,7 @@ public class Follow extends AppCompatActivity
     }
 
     private void creatList(){
-        for(int i=0;i<=mGoodsList.size();i++){
+        for(int i=0;i<mGoodsList.size();i++){
             mQuantityList.add(0);
             mCommenteList.add("");
         }
