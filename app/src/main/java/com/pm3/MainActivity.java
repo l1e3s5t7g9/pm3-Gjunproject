@@ -149,15 +149,16 @@ public class MainActivity extends AppCompatActivity
         lo.add(new Order("拎杯", g1, "去冰無糖"));     // 訂購 計畫1 的 商品0
         lo.add(new Order("拎杯", g1, null));     // 訂購 計畫2 的 商品1
 
-
         // ====== 新增計畫 ======
         location = "我的座位";
         deadline = time.settime(0);
         arrivaltime = time.settime(20);
         topic = "拎杯請喝COMEBUY";
         goods = lg;
-        order = new ArrayList<>();
+        order = lo;
         mPlanList.add(new Plan(location, deadline, arrivaltime, topic, goods,order));     // 計畫1
+
+
         // ====== 新增商品 ======
         lg = new ArrayList<>();
         lg.add(new Goods("茶湯會", "阿薩姆紅茶", 56.0f));   // 商品0
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity
 
 
         //====== 我的訂單 ======
-//        mPrivatePlanList.add(mPlanList.get(1));
+        mPrivatePlanList.add(mPlanList.get(1));
         check();
         // ====== 更新畫面 ======
         OnlinListAdapter OnlinListAdapter = (OnlinListAdapter) mListView.getAdapter();
