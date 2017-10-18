@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayout01"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:paddingBottom="4dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
+
+    <TextView
+        android:id="@+id/follow_itemId"
+        android:layout_width="0dp"
+        android:layout_weight="0"
+        android:hint=""
+        android:layout_height="0dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/follow_itemGoods"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:hint="商品"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/follow_itemPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="單價"
+        android:gravity="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/follow_itemQuantity"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:hint="數量"
+        android:gravity="center"
+        android:textSize="20sp" />
+    <TextView
+        android:id="@+id/follow_itemCommente"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:hint="註解"
+        android:gravity="center"
+        android:textSize="20sp" />
+</LinearLayout>
