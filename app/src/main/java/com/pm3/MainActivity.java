@@ -23,10 +23,14 @@ import com.google.gson.Gson;
 import com.pm3.Account.Info;
 import com.pm3.Account.Sign;
 import com.pm3.Adapter.OnlinListAdapter;
+import com.pm3.Class_Object.Goods;
+import com.pm3.Class_Object.Order;
 import com.pm3.Class_Object.Plan;
 import com.pm3.Network.Net;
+import com.pm3.Tools.time;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -63,8 +67,8 @@ public class MainActivity extends AppCompatActivity
 
         settinglink = (ImageButton) findViewById(R.id.settinglink);
         messagelink = (ImageButton) findViewById(R.id.messagelink);
-
-        check();
+        initListView();//初始設定
+        check();//判定是否有自己的團購
 
 
     }
@@ -102,7 +106,80 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void settinglink(View v) {
+        // ====== 新增商品 ======
+        List<Goods> lg = new ArrayList<>();
+        Goods g0 =(new Goods("50嵐", "珍珠奶茶", 50.0f));    // 商品0
+        Goods g1 =(new Goods("50嵐", "茉莉綠茶", 51.0f));    // 商品1
+        Goods g2 =(new Goods("50嵐", "四季春茶", 52.0f));    // 商品2
+        Goods g3 =(new Goods("50嵐", "阿薩姆紅茶", 53.0f));   // 商品3
+        lg.add(g0);
+        lg.add(g1);
+        lg.add(g2);
+        lg.add(g3);
 
+        // ====== 新增訂單 ======
+        List<Order> lo = new ArrayList<>();
+        lo.add(new Order("黃昊廷", g0, "半糖少冰"));    // 商品0
+        lo.add(new Order("黃昊廷", g0, "微糖"));    // 商品1
+        lo.add(new Order("黃昊廷", g1, "少冰"));    // 商品2
+        lo.add(new Order("JOJO", g3, "熱飲"));    // 商品2
+
+        // ====== 新增計畫 =====
+        String location = "老地方拿飲料";
+        Calendar deadline = time.settime(10);
+        Calendar arrivaltime = time.settime(30);
+        String topic = "50嵐湊兩百外送";
+        List<Goods> goods = lg;
+        List<Order> order = new ArrayList<>();
+        mPlanList.add(new Plan(location, deadline, arrivaltime, topic, goods,order));     // 計畫0
+
+        // ====== 新增商品 ======
+        lg = new ArrayList<>();
+        g0 =(new Goods("COMEBUY", "珍珠奶茶", 54.0f));    // 商品0
+        g1 =(new Goods("COMEBUY", "四季春茶", 55.0f));    // 商品1
+        lg.add(g0);
+        lg.add(g1);
+
+        // ====== 新增訂單 ======
+        lo = new ArrayList<>();
+        lo.add(new Order("拎杯", g0, null));     // 訂購 計畫0 的 商品0
+        lo.add(new Order("拎杯", g0, "少冰"));     // 訂購 計畫0 的 商品1
+        lo.add(new Order("拎杯", g0, null));     // 訂購 計畫0 的 商品0
+        lo.add(new Order("拎杯", g1, "少糖"));     // 訂購 計畫0 的 商品1
+        lo.add(new Order("拎杯", g1, "去冰無糖"));     // 訂購 計畫1 的 商品0
+        lo.add(new Order("拎杯", g1, null));     // 訂購 計畫2 的 商品1
+
+
+        // ====== 新增計畫 ======
+        location = "我的座位";
+        deadline = time.settime(0);
+        arrivaltime = time.settime(20);
+        topic = "拎杯請喝COMEBUY";
+        goods = lg;
+        order = new ArrayList<>();
+        mPlanList.add(new Plan(location, deadline, arrivaltime, topic, goods,order));     // 計畫1
+        // ====== 新增商品 ======
+        lg = new ArrayList<>();
+        lg.add(new Goods("茶湯會", "阿薩姆紅茶", 56.0f));   // 商品0
+        lg.add(new Goods("清心福全", "茉莉綠茶", 57.0f));   // 商品1
+
+        // ====== 新增計畫 ======
+        location = "1F大廳櫃台";
+        deadline = time.settime(60);
+        arrivaltime = time.settime(90);
+        topic = "清心&茶湯會預購從速";
+        goods = lg;
+        order = new ArrayList<>();
+        mPlanList.add(new Plan(location, deadline, arrivaltime, topic, goods,order));     // 計畫2
+
+
+
+        //====== 我的訂單 ======
+//        mPrivatePlanList.add(mPlanList.get(1));
+        check();
+        // ====== 更新畫面 ======
+        OnlinListAdapter OnlinListAdapter = (OnlinListAdapter) mListView.getAdapter();
+        OnlinListAdapter.notifyDataSetChanged();
     }
 
     public void messagelink(View v) {
@@ -180,7 +257,6 @@ public class MainActivity extends AppCompatActivity
 
         } else if (requestCode == 回傳plan) {//收Plan的資料
             if (resultCode == RESULT_OK) {
-                initListView();
                 Plan plan = (Plan) data.getSerializableExtra("plan");
                 mPrivatePlanList.add(plan);
                 check();
