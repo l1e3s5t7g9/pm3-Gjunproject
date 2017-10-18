@@ -106,7 +106,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void messagelink(View v) {
-
+        startActivity( new Intent( MainActivity.this, MessageActivity.class ) );
+        overridePendingTransition(R.anim.push_in,R.anim.push_out);
     }
 
     public void openWifi() {

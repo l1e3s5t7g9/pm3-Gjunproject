@@ -30,7 +30,8 @@
             android:name="com.pm3.Cover"
             android:screenOrientation="portrait" />
         <activity android:name="com.pm3.Follow" />
-        <activity android:name="com.pm3.PlanList"></activity>
+        <activity android:name="com.pm3.PlanList" />
+        <activity android:name="com.pm3.MessageActivity"></activity>
     </application>
 
 </manifest>
