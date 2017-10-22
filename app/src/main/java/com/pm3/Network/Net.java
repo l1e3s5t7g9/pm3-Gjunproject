@@ -1,16 +1,21 @@
-package com.example.student.myapplicationxxx.Network;
+package com.pm3.Network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.TextView;
 
+import com.example.student.myapplicationxxx.R;
+import com.pm3.A;
+import com.pm3.Account.Info;
+import com.pm3.Account.Sign;
+import com.pm3.MainActivity;
+
 /**
  * Created by student on 2017/10/11.
  */
 
 public final class Net {
-
 
     public static String nTypeName;               //目前連線方式
     public static int nType;
@@ -26,6 +31,42 @@ public final class Net {
     public static boolean nFailover;                //網路目前是否有問題
     public static boolean nRoaming;               //網路目前是否在漫遊中
 
+    public static final int OFFLINE = 0;
+    public static final int OFFLINE_2_ONLINE = 1;
+    public static final int ONLINE = 2;
+    public static final int ONLINE_2_OFFLINE = 3;
+    public static int internet = OFFLINE;
+
+    public static void statusUpdate(MainActivity act) {
+
+        A prm = (A) act.getApplication();
+
+        if (prm.gSign == null) {    //初始化並取得Account
+            prm.gSign = new Sign(act);   // 取得 Account 資訊
+        }
+
+        switch (internet) {
+            case ONLINE_2_OFFLINE:
+                prm.gSign.logout();         //清除登入資訊
+                internet = OFFLINE;
+            default:
+            case OFFLINE:
+                if (NetCheck(act) == true) {
+                    internet = OFFLINE_2_ONLINE;
+                }
+                break;
+            case OFFLINE_2_ONLINE:
+                prm.gSign.SignIn();     // 取得 Account 資訊
+                internet = ONLINE;
+            case ONLINE:
+                if (NetCheck(act) == false) {
+                    internet = ONLINE_2_OFFLINE;
+                }
+                break;
+        }
+        act.runOnUiTextView(R.id.textViewNickName, Info.gDisplayNameNick);
+        act.runOnUiImageView(R.id.ImageViewIcon, Info.gPhotoUrlBitmap);
+    }
 
     public static final boolean NetCheck(Context ctx) {
 
@@ -49,6 +90,7 @@ public final class Net {
             nConnectedOrConnecting = false;
             nFailover = false;
             nRoaming = false;
+
             return false;
         } else {
             nTypeName = ni.getTypeName();
@@ -64,6 +106,7 @@ public final class Net {
             nConnectedOrConnecting = ni.isConnectedOrConnecting();
             nFailover = ni.isFailover();
             nRoaming = ni.isRoaming();
+
             return true;
         }
     }
