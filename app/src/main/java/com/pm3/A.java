@@ -128,6 +128,9 @@ public final class A extends Application {
         uptoCloud(null, null, hm);    //更新雲端
     }
 
+    public void addPublicOrderList(List<Order> orders) {
+        uptoCloud(null, orders, null);
+    }
 
     public List<Map<String, Object>> getAllPublicMsgs() {
         return (mPublicMessageList);
@@ -153,9 +156,6 @@ public final class A extends Application {
 
     }
 
-    public void setPublicOrderList(List<Order> orders) {
-        uptoCloud(null, orders, null);
-    }
 
 
     public Map<String, Object> getMsgLatest(List<Map<String, Object>> lm) {

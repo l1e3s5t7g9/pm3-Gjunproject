@@ -34,7 +34,7 @@ public class Follow extends AppCompatActivity
         AdapterView.OnItemSelectedListener,
         AdapterView.OnItemClickListener {
 
-
+    private A prm;
     private ListView mListView;
     private List<Goods> mGoodsList = new ArrayList<>();
     private TextView tv_topic, tv_location, tv_deadline, tv_arrivaltime;
@@ -48,6 +48,11 @@ public class Follow extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow);
+
+
+        prm = (A) getApplication();
+
+
         Intent intent = this.getIntent();
         //取得傳遞過來的資料
         Plan plan = (Plan) intent.getSerializableExtra("plan");
@@ -81,16 +86,18 @@ public class Follow extends AppCompatActivity
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.push_in, R.anim.push_out);
+
     }
 
     //===========follow_plan==========
 
-    public void follow_plan(View v){
+    public void follow_plan(View v) {
         new AlertDialog.Builder(this)
                 .setMessage("您確定要送出這些訂單？")
                 .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        prm.addPublicOrderList(mOrderList);
 //                        plan.setordersList(mOrderList);
 //                        prm.addPublicPlan(plan);
                         finish();
@@ -120,10 +127,10 @@ public class Follow extends AppCompatActivity
     }
 
     private void creatList() {
-        HorzontalListView=(GridLayout)findViewById(R.id.HorzontalListView);
+        HorzontalListView = (GridLayout) findViewById(R.id.HorzontalListView);
         for (int i = 0; i < mGoodsList.size(); i++) {
-            Button button =new Button(this);
-            button.setText(mGoodsList.get(i).getgoods()+"\n"+(mGoodsList.get(i).getprice()+"元"));
+            Button button = new Button(this);
+            button.setText(mGoodsList.get(i).getgoods() + "\n" + (mGoodsList.get(i).getprice() + "元"));
             final int finalI = i;
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -165,11 +172,12 @@ public class Follow extends AppCompatActivity
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-    @Override
-    public void 新增訂單確定(Goods goods,int 數量,String 備註) {
 
-        String subscriber= Info.gDisplayNameNick;
-        Order order=new Order(subscriber,goods,數量,備註);
+    @Override
+    public void 新增訂單確定(Goods goods, int 數量, String 備註) {
+
+        String subscriber = Info.gDisplayNameNick;
+        Order order = new Order(subscriber, goods, 數量, 備註);
         mOrderList.add(order);
         FollowListAdapter FollowListAdapter = (FollowListAdapter) mListView.getAdapter();
         FollowListAdapter.notifyDataSetChanged();
