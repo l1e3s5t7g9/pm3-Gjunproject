@@ -17,10 +17,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.pm3.Tools.time.calendar2string;
 import static com.pm3.Tools.time.nowtime;
 
 public class MessageActivity extends AppCompatActivity {
 
+    public final static String KEY_ID = "ID";
     public final static String KEY_TIM = "TIM";
     public final static String KEY_NICK = "NICK";
     public final static String KEY_MSG = "MSG";
@@ -74,7 +76,7 @@ public class MessageActivity extends AppCompatActivity {
 //            return;
 //        }
 //        List<Map<String, Object>> lm = plan.getMsgarr();
-        List<Map<String, Object>> lm = (List) prm.getAllPublicPlanMsg();
+        List<Map<String, Object>> lm = prm.getAllPublicMsgs();
 
         sa = new SimpleAdapter(
                 this,
@@ -106,12 +108,13 @@ public class MessageActivity extends AppCompatActivity {
 //                    msg.data.add(s);    //輸入一筆訊息
             Map<String, Object> hm = new HashMap<String, Object>() {
                 {
-                    put(KEY_TIM, nowtime());
+                    put(KEY_ID, Info.gId);
+                    put(KEY_TIM, calendar2string(nowtime()));
                     put(KEY_NICK, Info.gDisplayNameNick);
                     put(KEY_MSG, s);
                 }
             };
-            prm.addMyPublicPlanMsg(hm);
+            prm.addMyPublicMsg(hm);
 
 //            //限制總訊息量
 //            while (prm.getPlanMsgSiz() > MsgLimit) {

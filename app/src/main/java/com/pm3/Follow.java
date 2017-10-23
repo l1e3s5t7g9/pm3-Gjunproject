@@ -78,7 +78,7 @@ public class Follow extends AppCompatActivity
     }
 
     public void OrderListAddOrder(){
-        String subscriber= Info.gDisplayNameNick;
+        String subscriber= Info.gId;
         Goods goods;
         String notes;
 

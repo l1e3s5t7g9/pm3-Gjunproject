@@ -4,12 +4,18 @@ import android.app.Application;
 
 import com.pm3.Account.Info;
 import com.pm3.Account.Sign;
+import com.pm3.Class_Object.Order;
 import com.pm3.Class_Object.Plan;
-import com.pm3.Tools.CloudSync;
+import com.pm3.Network.CloudSync;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+
+import static com.pm3.MessageActivity.KEY_ID;
+import static com.pm3.MessageActivity.KEY_TIM;
+import static com.pm3.Tools.time.string2calendar;
 
 /**
  * Created by student on 2017/10/19.
@@ -27,51 +33,65 @@ public final class A extends Application {
     private List<Plan> mPublicPlanList = new ArrayList<>();     //公開進行中的 Plan Array
     private List<Plan> mPrivatePlanList = new ArrayList<>();    //已經結案的 Plan Array
 
+    private List<Map<String, Object>> mPublicMessageList = new ArrayList<>(); //雲上所有信息
+
+    private List<Order> mPublicOrderList = new ArrayList<>();    //雲上所有未整理的訂購單
+
+    public List<Order> getAllPublicOrders() {
+        return mPublicOrderList;
+    }
+
+    public List<Order> getMyPublicOrders(List<Order> orders) {
+        List<Order> rtn = new ArrayList<>();
+        for (Order o : orders) {
+            if (o.getSubscriber_id().equals(Info.gId) == true) {
+                rtn.add(o);
+            }
+        }
+        return rtn;
+    }
+
     public List<Plan> getAllPublicPlan() {
         return mPublicPlanList;
     }
 
-    public List<Map<String, Object>> getAllPublicPlanMsg() {
+    public List<Map<String, Object>> seqMsg(List<Map<String, Object>> lm) {
 
-        List<Map<String, Object>> rtn = new ArrayList<>();
+        ArrayList<Map<String, Object>> rtn = new ArrayList<>();
+        while (lm.size() > 0) {
 
-        for (Plan p : getAllPublicPlan()) {
+            //找最小時間
+            int index = 0;
+            int i = 0;
 
-            for (Map<String, Object> m : p.getMsgarr()) {
-                rtn.add(m);
+            Calendar min = string2calendar((String) lm.get(i).get(KEY_TIM));
+            for (; i < lm.size(); i++) {
+                Calendar cal = string2calendar((String) lm.get(i).get(KEY_TIM));
+//                if (cal.compareTo(min) < 0) {     // cal < min
+                if (cal.after(min) == true) {
+                    min = cal;
+                    index = i;
+                }
             }
+
+            rtn.add(lm.get(index));
+            lm.remove(index);
 
         }
 
-//        return seqMsg(rtn); //排序
-        return (rtn);
+        return rtn;
     }
-
-//    public List<Message> seqMsg(List<Message> lm) {
-//
-//        ArrayList<Message> rtn = new ArrayList<>();
-//
-//        for (int i = 0; i < lm.size(); i++) {
-//
-//            if (rtn.size() <= 0) {
-//                rtn.add(lm.get(i));
-//                lm.remove(i);
-//            } else {
-//                Calendar cal = (Calendar) lm.get(i).getValue(KEY_TIM);
-//                Calendar min = (Calendar) rtn.get(0).getValue(KEY_TIM);
-//                if (cal.compareTo(min) < 0) {     // cal < min
-//                    rtn.add(lm.get(i));
-//                    lm.remove(i);
-//                }
-//            }
-//
-//        }
-//        rtn.add(new min);
-//
-//    }
 
     public void setAllPublicPlan(List<Plan> planarr) {
         mPublicPlanList = planarr;
+    }
+
+    public void setAllPublicMessage(List<Map<String, Object>> messages) {
+        if (messages.size() <= 0) {
+            return;
+        }
+//        mPublicMessageList = messages;
+        mPublicMessageList = seqMsg(messages); //排序
     }
 
     public Plan getPlan(int item) {
@@ -100,61 +120,61 @@ public final class A extends Application {
     }
 
     public void addPublicPlan(Plan plan) {
-        mPublicPlanList.add(plan);
-        uptoCloud();    //更新雲端
+//        mPublicPlanList.add(plan);
+        uptoCloud(plan, null, null);    //更新雲端
     }
 
-    public void addMyPublicPlanMsg(Map<String, Object> hm) {
+    public void addMyPublicMsg(Map<String, Object> hm) {
+        uptoCloud(null, null, hm);    //更新雲端
+    }
 
-        int siz = getAllPublicPlanSize();
-        if (siz <= 0) {  //無內容
-            return;
+
+    public List<Map<String, Object>> getAllPublicMsgs() {
+        return (mPublicMessageList);
+    }
+
+    public List<Map<String, Object>> getMyPublicMsgs(List<Map<String, Object>> lm) {
+        List<Map<String, Object>> rtn = new ArrayList<>();
+        for (Map<String, Object> mso : lm) {
+            if (mso.get(KEY_ID).equals(Info.gId) == true) {
+                rtn.add(mso);
+            }
         }
-
-        int item = siz - 1;
-        Plan plan = getMyPublicPlan();  //取得我的公開 Plan
-
-        plan.addMsg(hm);
-        mPublicPlanList.set(item, plan);
-
-        uptoCloud();    //更新雲端
+        return rtn;
     }
 
-    public int getPlanMsgSiz(Plan plan) {
+    public int getMsgSiz(List<Map<String, Object>> message) {
 
-        if (plan != null) {
-            return plan.getMsgarr().size();
+        if (message != null) {
+            return message.size();
         } else {
             return 0;
         }
 
     }
 
-    public Map<String,Object> getPlanMsgLatest(Plan plan) {
-
-        if (plan != null) {
-            List<Map<String,Object>> lm = plan.getMsgarr();    //取訊息陣列
-            return lm.get(lm.size() - 1);                       //取最終一筆訊息
-        } else {
-            return null;
-        }
-
+    public void setPublicOrderList(List<Order> orders) {
+        uptoCloud(null, orders, null);
     }
 
-    public void delPlanMsg(int item) {
 
-        Plan plan = getMyPublicPlan();       //取得我的公開 Plan
-        if (plan != null) {
-            plan.getMsgarr().remove(item);
-            uptoCloud();    //更新雲端
-        }
-
+    public Map<String, Object> getMsgLatest(List<Map<String, Object>> lm) {
+//        return lm.get(lm.size() - 1);
+        return lm.get(0);
     }
 
-    public void uptoCloud() {      //更新雲端
+    public void uptoCloud(Plan pushPlan, List<Order> pushOrder, Map<String, Object> pushMsg) {      //更新雲端
 
         if (mCloudSync != null) {
-            mCloudSync.publish();       //發佈資料
+            if (pushPlan != null) {
+                mCloudSync.publish(pushPlan);    //發佈Plan資料
+            }
+            if (pushOrder != null) {
+                mCloudSync.publish(pushOrder);   //發佈Order資料
+            }
+            if (pushMsg != null) {
+                mCloudSync.publish(pushMsg);      //發佈Message資料
+            }
         }
 
     }

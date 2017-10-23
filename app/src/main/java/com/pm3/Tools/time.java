@@ -14,7 +14,7 @@ public class time {
     public static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");//定義好時間字串的格式
 
     // ====== 截止時間換算 ======
-    public static Calendar settime(String t) {
+    public static Calendar string2calendar(String t) {
         Calendar cal = Calendar.getInstance(); // 取得目前時間
         try {
             Date dt = sdf.parse(t);                              //將字串轉成Date型

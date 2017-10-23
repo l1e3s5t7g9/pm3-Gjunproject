@@ -3,10 +3,8 @@ package com.pm3.Class_Object;
 import com.pm3.Account.Info;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by TiGerTomb on 2017/10/12.
@@ -22,7 +20,7 @@ public class Plan implements Serializable {
     private String topic;           // 發起名目
     private List<Goods> goods;      // 發起商品
     private List<Order> orders;     // 訂單
-    private List<Map<String, Object>> msgarr = new ArrayList<>(); // 信息
+//    private List<Map<String, Object>> msgarr = new ArrayList<>(); // 信息
 
     public Plan(String location, Calendar deadline, Calendar arrivaltime, String topic, List<Goods> goods, List<Order> orders) {
         this.organizer_id = Info.gId;
@@ -111,12 +109,12 @@ public class Plan implements Serializable {
 //        return goods.set(g, item);
 //    }
 
-    public List<Map<String, Object>> getMsgarr() {
-        return msgarr;
-    }
-
-    public void addMsg(Map<String, Object> msg) {
-        this.msgarr.add(msg);
-    }
+//    public List<Map<String, Object>> getMsgarr() {
+//        return msgarr;
+//    }
+//
+//    public void addMsg(Map<String, Object> msg) {
+//        this.msgarr.add(msg);
+//    }
 
 }
