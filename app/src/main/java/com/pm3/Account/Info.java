@@ -9,16 +9,16 @@ import android.net.Uri;
 
 public final class Info {
 
-    public static String gEmail = null;
-    public static String gDisplayName = null;
-    public static String gGivenName = null;
-    public static String gFamilyName = null;
-    public static String gId = null;
+    public static String NO_SIGN = "guest";
+
+    public static String gEmail = NO_SIGN;
+    public static String gDisplayName = NO_SIGN;
+    public static String gGivenName = NO_SIGN;
+    public static String gFamilyName = NO_SIGN;
+    public static String gId = NO_SIGN;
     public static Uri gPhotoUrl = null;
 
-    public static String gDisplayNameNick = null;
+    public static String gDisplayNameNick = NO_SIGN;
     public static Bitmap gPhotoUrlBitmap = null;
-
-    public static boolean gLoginOk = false;
 
 }

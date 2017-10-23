@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
@@ -19,14 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.student.myapplicationxxx.R;
-import com.google.gson.Gson;
-import com.pm3.Account.Info;
 import com.pm3.Account.Sign;
 import com.pm3.Adapter.OnlinListAdapter;
 import com.pm3.Class_Object.Goods;
 import com.pm3.Class_Object.Order;
 import com.pm3.Class_Object.Plan;
 import com.pm3.Network.Net;
+import com.pm3.Network.CloudSync;
+import com.pm3.Tools.Notice;
 import com.pm3.Tools.time;
 
 import java.util.ArrayList;
@@ -38,15 +39,20 @@ public class MainActivity extends AppCompatActivity
         AdapterView.OnItemSelectedListener,
         AdapterView.OnItemClickListener {
 
-    int 回傳plan = 1;
+    private A prm;
+    private Handler han = new Handler();
+    private Runnable runnNotice;
+    private Runnable runnNet;
+
+    final int 回傳plan = 1;
     ImageButton settinglink;
     ImageButton messagelink;
-    private List<Plan> mPlanList = new ArrayList<>();
-    private List<Plan> mPrivatePlanList = new ArrayList<>();
+
+    private OnlinListAdapter OnlinListAdapter;
     private ListView mListView;
 
-    Sign gSign;
     Button START;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent in = new Intent();
@@ -56,9 +62,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        runLoging();
+        prm = (A) getApplication();
 
-//                runLoging();                               //執行登入程序
+        prm.mCloudSync = new CloudSync(this);       //雲端自動同步物件
+
+        taskLogin();                               //執行登入程序
 
         // ==========檢查Network==========
         if (Net.NetCheck(this) == false) {
@@ -67,33 +75,32 @@ public class MainActivity extends AppCompatActivity
 
         settinglink = (ImageButton) findViewById(R.id.settinglink);
         messagelink = (ImageButton) findViewById(R.id.messagelink);
-        initListView();//初始設定
+//        initListView();//初始設定
         check();//判定是否有自己的團購
 
 
     }
-    public void check(){
+
+    public void check() {
         //===========判定是否有自己的團購=======
 
-        START=(Button)findViewById(R.id.start);
-        if(mPrivatePlanList.size()==0){
+        START = (Button) findViewById(R.id.start);
+        if (prm.getMyPublicPlan() == null) {    //沒有我的公開 Plan
             START.setText("發起團購");
-        }else
-        {
+        } else {                                //有我的公開 Plan
             START.setText("我的團購");
         }
 
     }
 
     public void start(View v) {
-        if(mPrivatePlanList.size()==0) {
+        Plan plan = prm.getMyPublicPlan();
+        if (plan == null) {      //沒有我的公開 Plan
             Intent in = new Intent();
             in.setClass(MainActivity.this, Start.class);
             startActivityForResult(in, 回傳plan);
             overridePendingTransition(R.anim.push_in, R.anim.push_out);
-        }
-        else{
-            Plan plan=mPrivatePlanList.get(mPrivatePlanList.size()-1);
+        } else {                //有我的公開 Plan
             Intent data = new Intent();
             data.setClass(MainActivity.this, PlanList.class);
             Bundle bundle = new Bundle();
@@ -108,55 +115,123 @@ public class MainActivity extends AppCompatActivity
     public void settinglink(View v) {
         // ====== 新增商品 ======
         List<Goods> lg = new ArrayList<>();
-        Goods g0 =(new Goods("50嵐", "珍珠奶茶", 50.0f));    // 商品0
-        Goods g1 =(new Goods("50嵐", "茉莉綠茶", 51.0f));    // 商品1
-        Goods g2 =(new Goods("50嵐", "四季春茶", 52.0f));    // 商品2
-        Goods g3 =(new Goods("50嵐", "阿薩姆紅茶", 53.0f));   // 商品3
-        lg.add(g0);
-        lg.add(g1);
-        lg.add(g2);
-        lg.add(g3);
+        String[] 商品={
+                "茉莉綠茶",
+                "阿薩姆紅茶",
+                "四季春青茶",
+                "黃金烏龍",
+                "檸檬綠",
+                "梅の綠",
+                "桔子綠",
+                "8冰綠",
+                "養樂多綠",
+                "冰淇淋紅茶",
+                "鮮柚綠(季節限定)",
+                "奶茶",
+                "奶綠",
+                "紅茶瑪奇朵",
+                "烏龍瑪奇朵",
+                "四季奶青",
+                "黃金烏龍奶茶",
+                "阿華田",
+                "可可芭蕾",
+                "奶茶",
+                "奶綠",
+                "紅茶瑪奇朵",
+                "烏龍瑪奇朵",
+                "四季奶青",
+                "黃金烏龍奶茶",
+                "阿華田",
+                "可可芭蕾",
+                "波霸 紅/綠/青/烏",
+                "波霸奶茶(大顆)",
+                "波霸奶綠(大顆)",
+                "波霸烏龍奶茶",
+                "珍珠 紅/綠/青/烏",
+                "珍珠奶茶(小顆)",
+                "珍珠奶綠(小顆)",
+                "仙草奶凍",
+                "布丁 奶茶/奶綠/烏龍奶",
+                "布丁 紅/綠/青/烏",
+                "檸檬汁",
+                "金桔檸檬",
+                "檸檬梅汁",
+                "檸檬養樂多",
+                "8冰茶",
+                "鮮柚汁(季節限定)",
+                "葡萄柚多多(季節限定)",
+                "紅茶拿鐵",
+                "綠茶拿鐵",
+                "黃金烏龍拿鐵",
+                "阿華田拿鐵",
+                "可可芭蕾拿鐵",
+                "波霸鮮奶",
+                "珍珠鮮奶",
+                "仙草鮮奶",
+                "檸檬紅茶",
+                "檸檬梅汁綠",
+                "四季春+珍波椰",
+                "紅茶瑪奇朵",
+                "黃金烏龍拿鐵",
+                "波霸奶茶",
+                "四季奶青",
+                "波霸阿華田",
+                "布丁奶茶",
+                "檸檬梅汁"
+        };
+
+        for(int i=0;i<商品.length;i++){
+            lg.add(new Goods("50嵐",商品[i],(int)(Math.random()*100)));
+        }
+
+
+
+        Goods g0 = (new Goods("50嵐", "珍珠奶茶", 50.0f));    // 商品0
+        Goods g1 = (new Goods("50嵐", "茉莉綠茶", 51.0f));    // 商品1
+        Goods g2 = (new Goods("50嵐", "四季春茶", 52.0f));    // 商品2
+        Goods g3 = (new Goods("50嵐", "阿薩姆紅茶", 53.0f));   // 商品3
+
 
         // ====== 新增訂單 ======
         List<Order> lo = new ArrayList<>();
-        lo.add(new Order("黃昊廷", g0, "半糖少冰"));    // 商品0
-        lo.add(new Order("黃昊廷", g0, "微糖"));    // 商品1
-        lo.add(new Order("黃昊廷", g1, "少冰"));    // 商品2
-        lo.add(new Order("JOJO", g3, "熱飲"));    // 商品2
+        lo.add(new Order("黃昊廷", g0,1, "半糖少冰"));    // 商品0
+        lo.add(new Order("黃昊廷", g0,1, "微糖"));    // 商品1
+        lo.add(new Order("黃昊廷", g1,1, "少冰"));    // 商品2
+        lo.add(new Order("JOJO", g3,1, "熱飲"));    // 商品2
 
         // ====== 新增計畫 =====
         String location = "老地方拿飲料";
-        Calendar deadline = time.settime(10);
-        Calendar arrivaltime = time.settime(30);
+        Calendar deadline = time.settime(10,30);
+        Calendar arrivaltime = time.settime(12,30);
         String topic = "50嵐湊兩百外送";
         List<Goods> goods = lg;
         List<Order> order = new ArrayList<>();
-        mPlanList.add(new Plan(location, deadline, arrivaltime, topic, goods,order));     // 計畫0
+        prm.addPublicPlan(new Plan("iam2",location, deadline, arrivaltime, topic, goods, order));     // 計畫0
 
         // ====== 新增商品 ======
         lg = new ArrayList<>();
-        g0 =(new Goods("COMEBUY", "珍珠奶茶", 54.0f));    // 商品0
-        g1 =(new Goods("COMEBUY", "四季春茶", 55.0f));    // 商品1
+        g0 = (new Goods("COMEBUY", "珍珠奶茶", 54.0f));    // 商品0
+        g1 = (new Goods("COMEBUY", "四季春茶", 55.0f));    // 商品1
         lg.add(g0);
         lg.add(g1);
 
         // ====== 新增訂單 ======
         lo = new ArrayList<>();
-        lo.add(new Order("拎杯", g0, null));     // 訂購 計畫0 的 商品0
-        lo.add(new Order("拎杯", g0, "少冰"));     // 訂購 計畫0 的 商品1
-        lo.add(new Order("拎杯", g0, null));     // 訂購 計畫0 的 商品0
-        lo.add(new Order("拎杯", g1, "少糖"));     // 訂購 計畫0 的 商品1
-        lo.add(new Order("拎杯", g1, "去冰無糖"));     // 訂購 計畫1 的 商品0
-        lo.add(new Order("拎杯", g1, null));     // 訂購 計畫2 的 商品1
+        lo.add(new Order("拎杯", g0, 1, null));     // 訂購 計畫0 的 商品0
+        lo.add(new Order("拎杯", g0, 2, "少冰"));     // 訂購 計畫0 的 商品1
+        lo.add(new Order("拎杯", g0, 3, null));     // 訂購 計畫0 的 商品0
+        lo.add(new Order("拎杯", g1, 1, "少糖"));     // 訂購 計畫0 的 商品1
+        lo.add(new Order("拎杯", g1, 1, "去冰無糖"));     // 訂購 計畫1 的 商品0
+        lo.add(new Order("拎杯", g1, 1, null));     // 訂購 計畫2 的 商品1
 
         // ====== 新增計畫 ======
         location = "我的座位";
-        deadline = time.settime(0);
-        arrivaltime = time.settime(20);
+        deadline = time.settime(12,0);
+        arrivaltime = time.settime(12,20);
         topic = "拎杯請喝COMEBUY";
         goods = lg;
         order = lo;
-        mPlanList.add(new Plan(location, deadline, arrivaltime, topic, goods,order));     // 計畫1
+        prm.addPublicPlan(new Plan("iam3",location, deadline, arrivaltime, topic, goods, order));     // 計畫1
 
 
         // ====== 新增商品 ======
@@ -166,17 +241,16 @@ public class MainActivity extends AppCompatActivity
 
         // ====== 新增計畫 ======
         location = "1F大廳櫃台";
-        deadline = time.settime(60);
-        arrivaltime = time.settime(90);
+        deadline = time.settime(16,0);
+        arrivaltime = time.settime(19,0);
         topic = "清心&茶湯會預購從速";
         goods = lg;
         order = new ArrayList<>();
-        mPlanList.add(new Plan(location, deadline, arrivaltime, topic, goods,order));     // 計畫2
-
+        prm.addPublicPlan(new Plan("iam4",location, deadline, arrivaltime, topic, goods, order));     // 計畫2
 
 
         //====== 我的訂單 ======
-        mPrivatePlanList.add(mPlanList.get(1));
+//        mPrivatePlanList.add(mPlanList.get(1));
         check();
         // ====== 更新畫面 ======
         OnlinListAdapter OnlinListAdapter = (OnlinListAdapter) mListView.getAdapter();
@@ -184,8 +258,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void messagelink(View v) {
-        startActivity( new Intent( MainActivity.this, MessageActivity.class ) );
-        overridePendingTransition(R.anim.push_in,R.anim.push_out);
+        startActivity(new Intent(MainActivity.this, MessageActivity.class));
+        overridePendingTransition(R.anim.push_in, R.anim.push_out);
     }
 
     public void openWifi() {
@@ -235,49 +309,35 @@ public class MainActivity extends AppCompatActivity
     }
 
     //ListView 初始化設定
-    private void initListView() {
+    public void initListView() {
         mListView = (ListView) findViewById(R.id.onlinelist);
-        mListView.setAdapter(new OnlinListAdapter(this));
+        OnlinListAdapter = new OnlinListAdapter(this);
+        mListView.setAdapter(OnlinListAdapter);
         mListView.setOnItemClickListener(this);
     }
-
-    public List<Plan> getmPlanList() {
-        return mPlanList;
-    }
-
 
     //回傳資料後...
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Sign.RC_SIGN_IN) {
+        switch (requestCode) {
 
-            // ====== 取得帳戶資訊並放置於 Info class ======
-            gSign.Result(data);
+            case Sign.RC_SIGN_IN:   //取得登入資訊
+                prm.gSign.Result(data);     //更新資訊
+                break;
 
-        } else if (requestCode == 回傳plan) {//收Plan的資料
-            if (resultCode == RESULT_OK) {
-                Plan plan = (Plan) data.getSerializableExtra("plan");
-                mPrivatePlanList.add(plan);
-                check();
-//                plan.addGoods(new Goods("asdnji","nnjo",121));
-//                plan.addGoods(new Goods("asdn1253","nnj7777",12));
-//                plan.addGoods(new Goods("asdn1250003","nnj770077",999));
-                Gson gson = new Gson();
-                String 上傳plan = gson.toJson(plan);
-//================上傳plan資料======================
+            case 回傳plan:            //收Plan的資料
+                if (resultCode == RESULT_OK) {
+                    prm.addPublicPlan((Plan) data.getSerializableExtra("plan"));
+                    check();
+                } else if (requestCode == RESULT_CANCELED) {
+                    ;
+                }
+                break;
 
-
-//================下載plan資料======================
-                Plan 下載plan = gson.fromJson(上傳plan, Plan.class);
-                mPlanList.add(下載plan);
-                OnlinListAdapter OnlinListAdapter = (OnlinListAdapter) mListView.getAdapter();
-                OnlinListAdapter.notifyDataSetChanged();
-            } else if (requestCode == RESULT_CANCELED) {
-                ;
-            }
         }
+
     }
 
     //點選ListView的項目
@@ -288,9 +348,10 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent();
         intent.setClass(MainActivity.this, Follow.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("plan", mPlanList.get(position));
+        bundle.putSerializable("plan", prm.getPlan(position));
         intent.putExtras(bundle);
         startActivity(intent);
+        overridePendingTransition(R.anim.push_in, R.anim.push_out);
     }
 
     //吐司方法
@@ -311,7 +372,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public final void runOnUiTextView(final int id, final CharSequence cs) {
+    public void runOnUiTextView(final int id, final CharSequence cs) {
 
         runOnUiThread(new Runnable() {
             @Override
@@ -322,53 +383,72 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public final void runOnUiImageView(final int id, final Bitmap bm) {
+    public void runOnUiImageView(final int id, final Bitmap bm) {
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((ImageView) findViewById(id)).setImageBitmap(bm);
+                if (bm == null) {
+                    ((ImageView) findViewById(R.id.ImageViewIcon)).setImageResource(R.drawable.user);
+                } else {
+                    ((ImageView) findViewById(id)).setImageBitmap(bm);
+                }
             }
         });
 
     }
 
-    public final void runLoging() {
+    public final void taskLogin() {
 
-        new Thread(new Runnable() {
+        han.post(new Runnable() {
             @Override
             public void run() {
 
-//                // ====== 等待歡迎頁面結束 ======
-//                while ((findViewById(R.id.TextViewName) == null)
-//                        || (findViewById(R.id.ImageViewIcon) == null)
-//                        ) {
-//                    ;
-//                }
-
-                runOnUiTextView(R.id.TextViewName, "＜尚未連接網路＞");
-                while (Net.NetCheck(getApplicationContext()) == false) {
-                    ;
-                }
-
-                runOnUiTextView(R.id.TextViewName, "＜正在登入帳戶＞");
-                // ==========取得 Account 資訊==========
-                gSign = new Sign(MainActivity.this);   // 取得 Account 資訊
-                while (Info.gLoginOk == false) {
-                    ;
-                }
-
-                gSign.dispData();   // 準備暱稱及圖
-                runOnUiTextView(R.id.TextViewName, Info.gDisplayNameNick);
-                while (Info.gPhotoUrlBitmap == null) {
-                    ;
-                }
-                runOnUiImageView(R.id.ImageViewIcon, Info.gPhotoUrlBitmap);
+                han.postDelayed(this, 3000);
+                Net.statusUpdate(MainActivity.this);
 
             }
-        }).start();
+        });
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+//
+//        this.han.post(runnNet = new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                han.postDelayed(this, 5000);
+//
+//
+//            }
+//        });
+
+
+        //開始週期更替顯示
+        this.han.post(runnNotice = new Runnable() {
+            @Override
+            public void run() {
+
+                //開始下一個週期
+                han.postDelayed(this, 300);
+
+                //執行更替顯示
+                Notice.showNext(MainActivity.this);
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        han.removeCallbacks(runnNotice);
+
+    }
 
 }

@@ -8,9 +8,10 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
+        android:name="com.pm3.A"
         android:allowBackup="true"
         android:icon="@drawable/twclogo4"
-        android:label="台灣Cup"
+        android:label="午後三時"
         android:roundIcon="@drawable/twclogo4"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">

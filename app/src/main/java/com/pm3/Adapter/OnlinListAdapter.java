@@ -6,6 +6,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.student.myapplicationxxx.R;
+import com.pm3.A;
 import com.pm3.Class_Object.Plan;
 import com.pm3.MainActivity;
 
@@ -17,6 +18,9 @@ import static com.pm3.Tools.time.calendar2string;
  */
 
 public class OnlinListAdapter extends BaseAdapter {
+
+    private A prm;
+
     TextView tvItemId;
     TextView tvitemtopic;
     TextView tvitemlocation;
@@ -27,14 +31,12 @@ public class OnlinListAdapter extends BaseAdapter {
 
     public OnlinListAdapter(MainActivity activity){
         this.activity =activity;
+        this.prm = (A) this.activity.getApplication();
     }
-
-
-
 
     @Override
     public int getCount() {
-        return activity.getmPlanList().size();
+        return prm.getAllPublicPlanSize();
     }
 
     @Override
@@ -58,7 +60,7 @@ public class OnlinListAdapter extends BaseAdapter {
         TextView tvitemdeadline=(TextView)v.findViewById(R.id.itemdeadline);
         TextView tvitemarrivaltime=(TextView)v.findViewById(R.id.itemarrivaltime);
 
-        Plan plan = activity.getmPlanList().get(position);//plan資料來源
+        Plan plan = prm.getPlan(position);      //plan資料來源
 
 
         //設定資料//

@@ -12,7 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import static com.pm3.Tools.delay.delay;
+import static com.pm3.Account.Info.NO_SIGN;
 
 /**
  * Created by Felix on 2017/10/8.
@@ -20,7 +20,7 @@ import static com.pm3.Tools.delay.delay;
 
 public class Sign {
 
-    public static final int RC_SIGN_IN = 0;
+    public static final int RC_SIGN_IN = 578;
     public static final String TAG = "GoogleSignDemo";
     private GoogleApiClient mGoogleApiClient;
     private FragmentActivity act;
@@ -51,7 +51,7 @@ public class Sign {
                 .build();
 
 
-        SignIn();
+//        SignIn();
 
 //        SignInButton signInButton = (SignInButton) act.findViewById(R.id.sign_in_button);
 //        signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -81,52 +81,45 @@ public class Sign {
     }
 
 
-    public void Result(Intent data) {
+    public boolean Result(Intent data) {
 
         gResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                while (Result() == false) {
-                    delay(1000);
-                }
-                Info.gLoginOk = true;
-
-            }
-        }).start();
-
-    }
-
-    public boolean Result() {
-
-        Log.d(Sign.TAG, "SignInResult:" + gResult.isSuccess());
-        if (gResult.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = gResult.getSignInAccount();
-
-            Info.gEmail = acct.getEmail();
-            Info.gDisplayName = acct.getDisplayName();
-            Info.gGivenName = acct.getGivenName();
-            Info.gFamilyName = acct.getFamilyName();
-            Info.gId = acct.getId();
-            Info.gPhotoUrl = acct.getPhotoUrl();
-
+        if (gResult.isSuccess() == true) {
+            login();
             return true;
-
         } else {
-
+            logout();
             return false;
-
         }
 
     }
 
-    public void dispData() {
+    private void login() {
+        // Signed in successfully, show authenticated UI.
+        GoogleSignInAccount acct = gResult.getSignInAccount();
+
+        Info.gEmail = acct.getEmail();
+        Info.gDisplayName = acct.getDisplayName();
+        Info.gGivenName = acct.getGivenName();
+        Info.gFamilyName = acct.getFamilyName();
+        Info.gId = acct.getId();
+        Info.gPhotoUrl = acct.getPhotoUrl();
+
         Info.gDisplayNameNick = Info.gDisplayName;
         new GetUrlImg(/*act, iv*/).execute(Info.gPhotoUrl);
     }
 
+    public void logout() {
+        Info.gEmail = NO_SIGN;
+        Info.gDisplayName = NO_SIGN;
+        Info.gGivenName = NO_SIGN;
+        Info.gFamilyName = NO_SIGN;
+        Info.gId = NO_SIGN;
+        Info.gPhotoUrl = null;
+
+        Info.gDisplayNameNick = NO_SIGN;
+        Info.gPhotoUrlBitmap = null;
+    }
 
 }

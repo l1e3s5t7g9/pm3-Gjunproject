@@ -6,7 +6,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.student.myapplicationxxx.R;
-import com.pm3.Class_Object.Goods;
+import com.pm3.Class_Object.Order;
 import com.pm3.Follow;
 
 /**
@@ -25,7 +25,7 @@ public class FollowListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return activity.getmGoodsList().size();
+        return activity.getmOrderList().size();
     }
 
     @Override
@@ -49,17 +49,14 @@ public class FollowListAdapter extends BaseAdapter {
         TextView tvItemQuantity = (TextView) v.findViewById(R.id.follow_itemQuantity);
         TextView tvItemCommente = (TextView) v.findViewById(R.id.follow_itemCommente);
 
-        Goods goods = activity.getmGoodsList().get(position);                              //goods資料來源
-        Integer quantity = activity.getmQuantityList().get(position);                      //數量
-        String Commente = activity.getmCommenteList().get(position);                       //註解
-
+        Order order = activity.getmOrderList().get(position);                              //order資料來源
 
         //設定資料//
         tvItemId.setText("id");
-        tvItemGoods.setText(goods.getgoods());
-        tvItemPrice.setText(String.valueOf(goods.getprice()) + "");
-        tvItemQuantity.setText(String.valueOf(quantity));
-        tvItemCommente.setText(Commente);
+        tvItemGoods.setText(order.getGoods().getgoods());
+        tvItemPrice.setText(String.valueOf(order.getGoods().getprice()));
+        tvItemQuantity.setText(String.valueOf(order.get數量()));
+        tvItemCommente.setText(order.getNotes());
         return v;
     }
 }

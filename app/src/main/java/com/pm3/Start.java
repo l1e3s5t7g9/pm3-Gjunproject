@@ -1,15 +1,22 @@
 package com.pm3;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.student.myapplicationxxx.R;
@@ -25,15 +32,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.example.student.myapplicationxxx.R.id.itemlocation;
+
 public class Start extends AppCompatActivity
         implements GoodsFragment.chouse,
         PlanFragment.chouse,
         AdapterView.OnItemSelectedListener,
-        AdapterView.OnItemClickListener {
+        AdapterView.OnItemClickListener,
+        DatePicker.OnDateChangedListener,
+        TimePicker.OnTimeChangedListener {
 
     private ListView mListView;
     private List<Goods> mGoodsList = new ArrayList<>();
     private List<Plan> mPlanList = new ArrayList<>();
+    private String 發起名目;
+    private String 集散地點;
+    private Calendar 截止時間;
+    private Calendar 預計送達時間;
 
 
     @Override
@@ -57,8 +72,26 @@ public class Start extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 if (mGoodsList.size() > 0) {
-                    DialogFragment dialog = new PlanFragment();
-                    dialog.show(getSupportFragmentManager(), "PlanFragment");
+//                    DialogFragment dialog = new PlanFragment();
+//                    dialog.show(getSupportFragmentManager(), "PlanFragment");
+                    if (發起名目 != null || 集散地點 != null || 截止時間 != null || 預計送達時間 != null) {
+
+                        發起名目 = et_topic.getText().toString();
+                        集散地點 = et_location.getText().toString();
+
+                        Plan plan = 輸入資料toNewPlan();
+                        Intent data = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("plan", plan);
+
+                        data.putExtras(bundle);
+                        setResult(RESULT_OK, data);
+                        finish();
+                    } else {
+                        處理訊息("上面資料不完整");
+                    }
+
+
                 } else {
                     處理訊息("至少要有一筆商品");
                 }
@@ -69,16 +102,13 @@ public class Start extends AppCompatActivity
         });
 
         initListView();
+        initplanset();
 
     }
 
 
     public List<Goods> getmGoodsList() {
         return mGoodsList;
-    }
-
-    public List<Plan> getmPlanList() {
-        return mPlanList;
     }
 
     //ListView 初始化設定
@@ -117,15 +147,15 @@ public class Start extends AppCompatActivity
 
     @Override
     public void 新增專案確定(String 發起名目, String 集散地點, int 截止時間, int 預計送達時間) {
-        處理訊息("收到確定 plan");
-        Plan plan = 輸入資料toNewPlan(發起名目, 集散地點, 截止時間, 預計送達時間);
-        Intent data = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("plan", plan);
-
-        data.putExtras(bundle);
-        setResult(RESULT_OK, data);
-        finish();
+//        處理訊息("收到確定 plan");
+//        Plan plan = 輸入資料toNewPlan(發起名目, 集散地點, 截止時間, 預計送達時間);
+//        Intent data = new Intent();
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("plan", plan);
+//
+//        data.putExtras(bundle);
+//        setResult(RESULT_OK, data);
+//        finish();
 
     }
 
@@ -144,7 +174,24 @@ public class Start extends AppCompatActivity
     //點選ListView的項目
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        處理訊息("點選了第" + (position + 1) + "項");
+        final int 商品編號 = position;
+        new AlertDialog.Builder(this)
+                .setMessage("您確定要刪除這筆商品？")
+                .setPositiveButton("刪除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        mGoodsList.remove(商品編號);
+                        MyListAdapter myListAdapter = (MyListAdapter) mListView.getAdapter();
+                        myListAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ;
+                    }
+                })
+                .show();
     }
 
 
@@ -159,15 +206,113 @@ public class Start extends AppCompatActivity
     }
 
     //將資料存入Plan
-    private Plan 輸入資料toNewPlan(String 發起名目, String 集散地點, int 截止時間, int 預計送達時間) {
+    private Plan 輸入資料toNewPlan() {
         String location = 集散地點;
-        Calendar deadline = time.settime(截止時間);
-        Calendar arrivaltime = time.settime(截止時間 + 預計送達時間);
+        Calendar deadline = 截止時間;
+        Calendar arrivaltime = 預計送達時間;
         String topic = 發起名目;
         List<Goods> goods = mGoodsList;
         List<Order> order = new ArrayList<>();
 
 
         return new Plan(location, deadline, arrivaltime, topic, goods, order);
+    }
+
+
+    private EditText et_topic;
+    private EditText et_location;
+    private TextView et_deadline;
+    private TextView et_arrivaltime;
+
+    private void initplanset() {
+        et_topic = (EditText) findViewById(R.id.itemtopic);
+        et_location = (EditText) findViewById(itemlocation);
+        et_deadline = (TextView) findViewById(R.id.itemdeadline);
+        et_arrivaltime = (TextView) findViewById(R.id.itemarrivaltime);
+        sb_deadline = new StringBuffer();
+        sb_arrivaltime = new StringBuffer();
+    }
+
+    private Context context = this;
+    private StringBuffer sb_deadline;
+    private StringBuffer sb_arrivaltime;
+    private int year, month, day, hour, minute;
+
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.itemdeadline:
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setPositiveButton("設置", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (sb_deadline.length() > 0) { //清除上次记录的日期
+                            sb_deadline.delete(0, sb_deadline.length());
+                        }
+                        et_deadline.setText(sb_deadline.append(String.valueOf(hour)).append("時").append(String.valueOf(minute)).append("分"));
+                        截止時間 = time.settime(hour, minute);
+
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                View dialogView = View.inflate(context, R.layout.dialog_time, null);
+                TimePicker timePicker = (TimePicker) dialogView.findViewById(R.id.timePicker);
+                timePicker.setCurrentHour(hour);
+                timePicker.setCurrentMinute(minute);
+                timePicker.setIs24HourView(true); //设置24小时制
+                timePicker.setOnTimeChangedListener(this);
+                dialog.setView(dialogView);
+                dialog.show();
+                break;
+            case R.id.itemarrivaltime:
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(context);
+                builder2.setPositiveButton("設置", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (sb_arrivaltime.length() > 0) { //清除上次记录的日期
+                            sb_arrivaltime.delete(0, sb_arrivaltime.length());
+                        }
+                        et_arrivaltime.setText(sb_arrivaltime.append(String.valueOf(hour)).append("時").append(String.valueOf(minute)).append("分"));
+                        預計送達時間 = time.settime(hour, minute);
+                        dialog.dismiss();
+                    }
+                });
+                builder2.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog2 = builder2.create();
+                View dialogView2 = View.inflate(context, R.layout.dialog_time, null);
+                TimePicker timePicker2 = (TimePicker) dialogView2.findViewById(R.id.timePicker);
+                timePicker2.setCurrentHour(hour);
+                timePicker2.setCurrentMinute(minute);
+                timePicker2.setIs24HourView(true); //设置24小时制
+                timePicker2.setOnTimeChangedListener(this);
+                dialog2.setView(dialogView2);
+                dialog2.show();
+                break;
+        }
+    }
+
+    @Override
+    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        this.year = year;
+        this.month = monthOfYear;
+        this.day = dayOfMonth;
+    }
+
+    @Override
+    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+        this.hour = hourOfDay;
+        this.minute = minute;
     }
 }
