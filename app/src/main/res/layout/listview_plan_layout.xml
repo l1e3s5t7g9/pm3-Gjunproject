@@ -5,7 +5,6 @@
     android:id="@+id/RelativeLayout01"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
     android:orientation="horizontal"
     android:paddingBottom="4dp"
     android:paddingLeft="12dp"
@@ -23,7 +22,7 @@
         android:id="@+id/itemtopic"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:hint="名目"
+        android:hint="團購名目"
         android:gravity="center"
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
@@ -33,7 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="地點"
+        android:hint="集貨地點"
         android:gravity="center"
         android:textSize="20sp" />
 

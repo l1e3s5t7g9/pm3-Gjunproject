@@ -113,7 +113,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void settinglink(View v) {
+    public void settinglink(View v) {}
+
+
+    public void settinglink_nottouse(View v) {
         // ====== 新增商品 ======
         List<Goods> lg = new ArrayList<>();
         String[] 商品={

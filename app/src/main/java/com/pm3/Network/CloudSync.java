@@ -140,10 +140,11 @@ public class CloudSync {
         int siz = 0;
         List<Order> lo1 = prm.getAllPublicOrders();
         if (lo1 != null) {
-            List<Order> lo2 = prm.getMyPublicOrders(lo1);
-            if (lo2 != null) {
-                siz = lo2.size();
-            }
+            siz = lo1.size();
+//            List<Order> lo2 = prm.getMyPublicOrders(lo1);
+//            if (lo2 != null) {
+//                siz = lo2.size();
+//            }
         }
 
         for (Order o : orders) {    //一次發送所有Order

@@ -48,7 +48,7 @@ public final class A extends Application {
     public List<Order> getMyPublicOrders(List<Order> orders) {
         List<Order> rtn = new ArrayList<>();
         for (Order o : orders) {
-            if (o.getSubscriber_id().equals(Info.gId) == true) {
+            if (o.getOrganizer_id().equals(Info.gId) == true) {
                 rtn.add(o);
             }
         }

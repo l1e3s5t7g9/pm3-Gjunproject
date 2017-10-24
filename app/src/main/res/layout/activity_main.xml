@@ -111,72 +111,15 @@
         android:id="@+id/onlinelist"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="28dp"
         android:background="@android:drawable/alert_light_frame"
         android:text=""
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/start"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout_main" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout_main"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
+        app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginTop="8dp"
-        android:background="@android:drawable/alert_light_frame"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ImageViewIcon">
-
-        <TextView
-            android:id="@+id/itemId"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0"
-            android:hint=""
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/itemtopic"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:hint="名目"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/itemlocation"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:hint="地點"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/itemdeadline"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:hint="截止時間"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/itemarrivaltime"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:hint="貨到時間"
-            android:textSize="20sp" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/ImageViewIcon" />
 
 
 </android.support.constraint.ConstraintLayout>

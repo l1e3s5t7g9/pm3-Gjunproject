@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.student.myapplicationxxx.R;
-import com.pm3.Account.Info;
 import com.pm3.Adapter.FollowListAdapter;
 import com.pm3.Class_Object.Goods;
 import com.pm3.Class_Object.Order;
@@ -35,6 +34,8 @@ public class Follow extends AppCompatActivity
         AdapterView.OnItemClickListener {
 
     private A prm;
+
+    Plan plan;
     private ListView mListView;
     private List<Goods> mGoodsList = new ArrayList<>();
     private TextView tv_topic, tv_location, tv_deadline, tv_arrivaltime;
@@ -55,7 +56,7 @@ public class Follow extends AppCompatActivity
 
         Intent intent = this.getIntent();
         //取得傳遞過來的資料
-        Plan plan = (Plan) intent.getSerializableExtra("plan");
+        plan = (Plan) intent.getSerializableExtra("plan");
         tv_topic = (TextView) findViewById(R.id.名目);
         tv_location = (TextView) findViewById(R.id.地點);
         tv_deadline = (TextView) findViewById(R.id.截止時間);
@@ -176,8 +177,8 @@ public class Follow extends AppCompatActivity
     @Override
     public void 新增訂單確定(Goods goods, int 數量, String 備註) {
 
-        String subscriber = Info.gId;
-        Order order = new Order(subscriber, goods, 數量, 備註);
+        String 發起者ID = plan.getOrganizer_id();
+        Order order = new Order(發起者ID, goods, 數量, 備註);
         mOrderList.add(order);
         FollowListAdapter FollowListAdapter = (FollowListAdapter) mListView.getAdapter();
         FollowListAdapter.notifyDataSetChanged();
