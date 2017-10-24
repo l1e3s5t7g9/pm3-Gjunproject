@@ -76,6 +76,12 @@ public class Order implements Serializable {
         this.數量 = 數量;
     }
 
+
+    public int get總價() {
+        return (int)(數量*getGoods().getprice());
+    }
+
+
     public String getNotes() {
         return notes;
     }

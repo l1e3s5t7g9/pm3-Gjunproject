@@ -34,13 +34,21 @@
         android:gravity="center"
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
-
     <TextView
-        android:id="@+id/order_itemPrice"
+        android:id="@+id/order_item數量"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="單價"
+        android:hint="數量"
+        android:gravity="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/order_item總價"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="總價"
         android:gravity="center"
         android:textSize="20sp" />
 

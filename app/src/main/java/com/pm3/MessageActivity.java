@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.student.myapplicationxxx.R;
@@ -40,7 +41,16 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message);
+        setContentView(R.layout.activity_message2);
+
+        TabHost tabHost = (TabHost)findViewById(R.id.TabHost);
+        tabHost.setup();
+
+        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("訊息").setContent(R.id.tab1));
+
+        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("2").setContent(R.id.tab2));
+
+        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("3").setContent(R.id.tab3));
 
         prm = (A) getApplication();
 

@@ -27,7 +27,7 @@ public class Notice {
         A prm = (A) act.getApplication();
 
         Net.NetCheck(act);      //更新網路連接狀態
-
+        act.check();//判定是否有自己的團購
         StringBuilder sb = new StringBuilder();
         if (Net.internet == OFFLINE) {                //尚未連接網路
 
