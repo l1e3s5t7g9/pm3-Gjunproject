@@ -55,6 +55,26 @@ public final class A extends Application {
         return rtn;
     }
 
+    public List<Order> getMyOrders(List<Order> orders) {
+        List<Order> rtn = new ArrayList<>();
+        for (Order o : orders) {
+            if (o.getSubscriber_id().equals(Info.gId) == true) {
+                rtn.add(o);
+            }
+        }
+        return rtn;
+    }
+
+    public List<Order> removeMyOrders(List<Order> orders) {
+        List<Order> rtn = new ArrayList<>();
+        for (Order o : orders) {
+            if (o.getSubscriber_id().equals(Info.gId) == true) {
+                rtn.remove(o);
+            }
+        }
+        return rtn;
+    }
+
     public List<Plan> getAllPublicPlan() {
         return mPublicPlanList;
     }

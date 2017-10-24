@@ -56,6 +56,7 @@ public class OnlinListAdapter extends BaseAdapter {
 
         TextView tvItemId=(TextView)v.findViewById(R.id.itemId);
         TextView tvitemtopic=(TextView)v.findViewById(R.id.itemtopic);
+        TextView tvitem發起人=(TextView)v.findViewById(R.id.item發起人);
         TextView tvitemlocation=(TextView)v.findViewById(R.id.itemlocation);
         TextView tvitemdeadline=(TextView)v.findViewById(R.id.itemdeadline);
         TextView tvitemarrivaltime=(TextView)v.findViewById(R.id.itemarrivaltime);
@@ -66,6 +67,7 @@ public class OnlinListAdapter extends BaseAdapter {
         //設定資料//
         tvItemId.setText("id");
         tvitemtopic.setText(plan.getTopic());
+        tvitem發起人.setText(plan.getOrganizer());
         tvitemlocation.setText(plan.getLocation());
         tvitemdeadline.setText(calendar2string(plan.getDeadline()));
         tvitemarrivaltime.setText(calendar2string(plan.getArrivaltime()));

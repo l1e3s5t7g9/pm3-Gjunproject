@@ -31,10 +31,11 @@ public class Follow extends AppCompatActivity
         implements
         FollowFragment.chouse,
         AdapterView.OnItemSelectedListener,
-        AdapterView.OnItemClickListener {
+        AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener{
 
     private A prm;
-
+    FollowListAdapter FollowListAdapter;
     Plan plan;
     private ListView mListView;
     private List<Goods> mGoodsList = new ArrayList<>();
@@ -71,9 +72,9 @@ public class Follow extends AppCompatActivity
 
 
         creatList();
-
+        mOrderList=prm.getMyOrders(prm.getAllPublicOrders());
         initListView();
-        FollowListAdapter FollowListAdapter = (FollowListAdapter) mListView.getAdapter();
+        FollowListAdapter = (FollowListAdapter) mListView.getAdapter();
         FollowListAdapter.notifyDataSetChanged();
     }
 
@@ -98,6 +99,7 @@ public class Follow extends AppCompatActivity
                 .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        prm.removeMyOrders(prm.getAllPublicOrders());
                         prm.addPublicOrder(mOrderList);
 //                        plan.setordersList(mOrderList);
 //                        prm.addPublicPlan(plan);
@@ -155,6 +157,7 @@ public class Follow extends AppCompatActivity
         mListView = (ListView) findViewById(R.id.FollowlistView);
         mListView.setAdapter(new FollowListAdapter(this));
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);//設置長案效果
     }
 
 
@@ -173,6 +176,30 @@ public class Follow extends AppCompatActivity
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        final int 這筆訂單=position;
+        new AlertDialog.Builder(this)
+                .setMessage("您確定要刪除這訂單？")
+                .setPositiveButton("刪除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        mOrderList.remove(這筆訂單);
+
+                        FollowListAdapter.notifyDataSetChanged();//更新畫面
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ;
+                    }
+                })
+                .show();
+        return false;
+    }
+
 
     @Override
     public void 新增訂單確定(Goods goods, int 數量, String 備註) {
@@ -195,4 +222,5 @@ public class Follow extends AppCompatActivity
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
+
 }

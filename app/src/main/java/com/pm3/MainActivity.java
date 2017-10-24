@@ -350,8 +350,6 @@ public class MainActivity extends AppCompatActivity
     //點選ListView的項目
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        處理訊息("點選了第" + (position + 1) + "項");
-        //new一個intent物件，並指定Activity切換的class
         Intent intent = new Intent();
         intent.setClass(MainActivity.this, Follow.class);
         Bundle bundle = new Bundle();
