@@ -51,6 +51,7 @@ public class PlanListAdapter extends BaseAdapter {
         TextView tvItemId = (TextView) v.findViewById(R.id.order_itemId);
         TextView tvItemSubscriber = (TextView) v.findViewById(R.id.order_itemSubscriber);
         TextView tvItemGoods = (TextView) v.findViewById(R.id.order_itemGoods);
+        TextView tvItemprice = (TextView) v.findViewById(R.id.order_itemprice);
         TextView tvItem數量 = (TextView) v.findViewById(R.id.order_item數量);
         TextView tvItem總價 = (TextView) v.findViewById(R.id.order_item總價);
         TextView tvItemCommente = (TextView) v.findViewById(R.id.order_itemCommente);
@@ -58,6 +59,7 @@ public class PlanListAdapter extends BaseAdapter {
         Order order = activity.getmPrivatePlanList().get(position);                        //plan資料來源
         String Subscriber = order.getSubscriber();
         String Goods = order.getGoods().getgoods();
+        int price = (int)order.getGoods().getprice();
         int 數量 = order.get數量();
         int 總價 = order.get總價();
         String Commente = order.getNotes();
@@ -66,8 +68,9 @@ public class PlanListAdapter extends BaseAdapter {
         tvItemId.setText("id");
         tvItemSubscriber.setText(Subscriber);
         tvItemGoods.setText(Goods);
-        tvItem數量.setText(數量 + "");
-        tvItem總價.setText(總價 + "元");
+        tvItemprice.setText(""+price+"元");
+        tvItem數量.setText(""+數量);
+        tvItem總價.setText(""+總價 + "元");
         tvItemCommente.setText(Commente);
         return v;
     }

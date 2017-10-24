@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -43,7 +44,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message2);
 
-        TabHost tabHost = (TabHost)findViewById(R.id.TabHost);
+        TabHost tabHost = (TabHost) findViewById(R.id.TabHost);
         tabHost.setup();
 
         tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("訊息").setContent(R.id.tab1));
@@ -68,6 +69,12 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    //回上一頁
+    public void backclick(View view) {
+        finish();
+        overridePendingTransition(R.anim.push_in, R.anim.push_out);
     }
 
     @Override
@@ -148,6 +155,7 @@ public class MessageActivity extends AppCompatActivity {
         han.removeCallbacks(runn);  //停止更新ListView
 
     }
+
 
     private class runnUpdate implements Runnable {
         @Override

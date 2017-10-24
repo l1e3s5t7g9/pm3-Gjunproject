@@ -251,16 +251,15 @@ public class CloudSync {
 
 
             //拉取Message
-            List<Map<String, Object>> lm = new ArrayList<>();
+            List<Map<String, Object>> lm = null;
             for (final DataSnapshot ds : dataSnapshot.child(C_PUB).getChildren()) {     //拉取所有資料節點
                 for (final DataSnapshot ds_ctx : dataSnapshot.child(C_PUB).child(ds.getKey()).getChildren()) {      //進入節點
 
                     if (ds_ctx.getKey().equals(C_MSG) == true) {   //解出Message
                         String value = (String) ds_ctx.getValue();
                         value = deAES(value);
-                        for (Map<String, Object> mso : deJSON_Msg(value)) {
-                            lm.add(mso);
-                        }
+                        lm = deJSON_Msg(value);
+                        break;
                     }
 
                 }

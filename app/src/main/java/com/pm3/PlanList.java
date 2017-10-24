@@ -1,6 +1,7 @@
 package com.pm3;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,9 +23,11 @@ public class PlanList extends AppCompatActivity
         AdapterView.OnItemSelectedListener,
         AdapterView.OnItemClickListener {
 
+    A prm;
+
     private List<Order> mPrivatePlanList = new ArrayList<>();
     private ListView mListView;
-
+    PlanListAdapter PlanListAdapter;
     private TextView tv_topic, tv_location, tv_deadline, tv_arrivaltime,tv_合計;
 
     @Override
@@ -32,11 +35,11 @@ public class PlanList extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_list);
 
-        A prm = (A) getApplication();
+        prm = (A) getApplication();
 
         Plan plan = (Plan) prm.getMyPublicPlan();
 
-        mPrivatePlanList = prm.getMyPublicOrders(prm.getAllPublicOrders());
+
 
 
         tv_topic = (TextView) findViewById(R.id.名目);
@@ -49,22 +52,32 @@ public class PlanList extends AppCompatActivity
         tv_deadline.setText(calendar2string(plan.getDeadline()));
         tv_arrivaltime.setText(calendar2string(plan.getArrivaltime()));
 
-
-        int 合計int=0;
-        for(int i=0;i<mPrivatePlanList.size();i++){
-            合計int=合計int+mPrivatePlanList.get(i).get總價();
-        }
-
-        tv_合計.setText(合計int+"");
         initListView();
 
-        PlanListAdapter PlanListAdapter = (PlanListAdapter) mListView.getAdapter();
-        PlanListAdapter.notifyDataSetChanged();
     }
 
     public List<Order> getmPrivatePlanList() {
         return mPrivatePlanList;
     }
+
+
+
+    public void alwaysrun(){
+        mPrivatePlanList.clear();
+        for (Order o:prm.getMyPublicOrders(prm.getAllPublicOrders())) {
+            mPrivatePlanList.add(o);
+        }
+
+        int 合計int=0;
+        for(int i=0;i<mPrivatePlanList.size();i++){
+            合計int=合計int+mPrivatePlanList.get(i).get總價();
+        }
+        tv_合計.setText(合計int+"");
+        PlanListAdapter = (PlanListAdapter) mListView.getAdapter();
+        PlanListAdapter.notifyDataSetChanged();
+    }
+
+
 
     private void initListView() {
         mListView = (ListView) findViewById(R.id.PlanlistView);
@@ -99,4 +112,34 @@ public class PlanList extends AppCompatActivity
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    private Handler han;
+    private Runnable runn;
+    private class runnUpdate implements Runnable {
+        @Override
+        public void run() {
+
+            han.postDelayed(this, 500);     //定時
+            alwaysrun();                //更新ListView
+
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        han = new Handler();
+        runn = new runnUpdate();
+        han.post(runn);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        han.removeCallbacks(runn);  //停止更新ListView
+
+    }
+
 }

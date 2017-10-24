@@ -113,7 +113,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void settinglink(View v) {}
+    public void settinglink(View v) {
+        CloudSync cs =  prm.mCloudSync;
+        cs.clear();
+    }
 
 
     public void settinglink_nottouse(View v) {

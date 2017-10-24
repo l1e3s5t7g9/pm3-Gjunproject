@@ -68,12 +68,12 @@ public final class A extends Application {
             int index = 0;
             int i = 0;
 
-            Calendar min = string2calendar((String) lm.get(i).get(KEY_TIM));
+            Calendar max = string2calendar((String) lm.get(i).get(KEY_TIM));
             for (; i < lm.size(); i++) {
                 Calendar cal = string2calendar((String) lm.get(i).get(KEY_TIM));
 //                if (cal.compareTo(min) < 0) {     // cal < min
-                if (cal.after(min) == true) {
-                    min = cal;
+                if (cal.before(max) == true) {
+                    max = cal;
                     index = i;
                 }
             }
