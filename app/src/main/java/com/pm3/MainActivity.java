@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity
             Intent data = new Intent();
             data.setClass(MainActivity.this, PlanList.class);
             Bundle bundle = new Bundle();
+
             bundle.putSerializable("privatplan", plan);
             data.putExtras(bundle);
             startActivity(data);

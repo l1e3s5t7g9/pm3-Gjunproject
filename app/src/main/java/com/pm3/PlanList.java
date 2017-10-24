@@ -46,7 +46,9 @@ public class PlanList extends AppCompatActivity
 
         initListView();
 
-        mPrivatePlanList=plan.getordersList();
+//        mPrivatePlanList=plan.getordersList();
+        A prm = (A) getApplication();
+        mPrivatePlanList = prm.getMyPublicOrders(prm.getAllPublicOrders());
         PlanListAdapter PlanListAdapter = (PlanListAdapter) mListView.getAdapter();
         PlanListAdapter.notifyDataSetChanged();
     }

@@ -26,7 +26,7 @@ public class MessageActivity extends AppCompatActivity {
     public final static String KEY_TIM = "TIM";
     public final static String KEY_NICK = "NICK";
     public final static String KEY_MSG = "MSG";
-    private final int MsgLimit = 5;
+    private final int MsgLimit = 100;
 
     private A prm;
 
@@ -43,8 +43,6 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message);
 
         prm = (A) getApplication();
-
-//        gson = new Gson();
 
         //EditText
         et = (EditText) findViewById(R.id.editTextMessage);
@@ -71,11 +69,6 @@ public class MessageActivity extends AppCompatActivity {
 
     private void initListView() {
 
-//        Plan plan = prm.getMyPublicPlan();      //取得我的公開 Plan
-//        if (plan == null) {
-//            return;
-//        }
-//        List<Map<String, Object>> lm = plan.getMsgarr();
         List<Map<String, Object>> lm = prm.getAllPublicMsgs();
 
         sa = new SimpleAdapter(
@@ -116,10 +109,10 @@ public class MessageActivity extends AppCompatActivity {
             };
             prm.addMyPublicMsg(hm);
 
-//            //限制總訊息量
-//            while (prm.getPlanMsgSiz() > MsgLimit) {
-//                prm.delPlanMsg(0);
-//            }
+            //限制總訊息量
+            while (prm.getMsgSiz(prm.getAllPublicMsgs()) > MsgLimit) {
+                prm.getAllPublicMsgs().remove(0);
+            }
 
             //Clear input box
             et.setText("");

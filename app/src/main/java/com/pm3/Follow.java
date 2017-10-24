@@ -97,7 +97,7 @@ public class Follow extends AppCompatActivity
                 .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        prm.addPublicOrderList(mOrderList);
+                        prm.addPublicOrder(mOrderList);
 //                        plan.setordersList(mOrderList);
 //                        prm.addPublicPlan(plan);
                         finish();
@@ -176,7 +176,7 @@ public class Follow extends AppCompatActivity
     @Override
     public void 新增訂單確定(Goods goods, int 數量, String 備註) {
 
-        String subscriber = Info.gDisplayNameNick;
+        String subscriber = Info.gId;
         Order order = new Order(subscriber, goods, 數量, 備註);
         mOrderList.add(order);
         FollowListAdapter FollowListAdapter = (FollowListAdapter) mListView.getAdapter();

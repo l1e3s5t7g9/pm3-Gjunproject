@@ -41,6 +41,10 @@ public final class A extends Application {
         return mPublicOrderList;
     }
 
+    public void setAllPublicOrders(List<Order> mPublicOrderList) {
+        this.mPublicOrderList = mPublicOrderList;
+    }
+
     public List<Order> getMyPublicOrders(List<Order> orders) {
         List<Order> rtn = new ArrayList<>();
         for (Order o : orders) {
@@ -87,7 +91,7 @@ public final class A extends Application {
     }
 
     public void setAllPublicMessage(List<Map<String, Object>> messages) {
-        if (messages.size() <= 0) {
+        if (messages == null || messages.size() <= 0) {
             return;
         }
 //        mPublicMessageList = messages;
@@ -128,7 +132,7 @@ public final class A extends Application {
         uptoCloud(null, null, hm);    //更新雲端
     }
 
-    public void addPublicOrderList(List<Order> orders) {
+    public void addPublicOrder(List<Order> orders) {
         uptoCloud(null, orders, null);
     }
 
@@ -155,7 +159,6 @@ public final class A extends Application {
         }
 
     }
-
 
 
     public Map<String, Object> getMsgLatest(List<Map<String, Object>> lm) {
