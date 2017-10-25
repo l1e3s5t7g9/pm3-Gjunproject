@@ -6,21 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/latte"
     android:orientation="vertical"
-    tools:context="com.pm3.Start"
+    tools:context="com.pm3.Start">
 
-    >
-
-    <ImageButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@android:drawable/ic_input_add"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintRight_toRightOf="@+id/listView" />
 
     <Button
 
@@ -29,20 +16,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="0dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/button"
-
         android:onClick="cancel"
         android:text="取消"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/listView"
-        app:layout_constraintTop_toBottomOf="@+id/listView"
-        app:layout_constraintVertical_bias="0.555" />
+        app:layout_constraintBottom_toBottomOf="@+id/ok"
+        app:layout_constraintLeft_toLeftOf="@+id/listView" />
 
     <Button
 
@@ -55,16 +38,13 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/button"
         android:onClick="ok"
         android:text="發起"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/listView"
-        app:layout_constraintTop_toBottomOf="@+id/listView"
-        app:layout_constraintVertical_bias="0.555" />
+        app:layout_constraintRight_toRightOf="@+id/listView" />
 
     <TextView
 
@@ -74,18 +54,34 @@
         android:layout_gravity="center"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-
-
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:background="#ffffff"
         android:gravity="center"
+        android:padding="8dp"
         android:text="訂購商品"
-        android:textColor="#FFFFFF"
-        android:textSize="40dp"
+        android:textSize="30dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_start2" />
+
+    <TextView
+
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="發起團購"
+        android:textSize="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <LinearLayout
         android:id="@+id/linearLayout_start2"
@@ -93,143 +89,47 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout_start">
-
-        <TextView
-            android:id="@+id/itemId"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0"
-            android:hint=""
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/itemtopic"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:hint="尚未輸入"
-            android:textColor="#ffffff"
-            android:textColorHint="#ffffff"
-            android:textSize="18dp" />
-
-        <EditText
-            android:id="@+id/itemlocation"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:hint="尚未輸入"
-            android:textColor="#ffffff"
-            android:textColorHint="#ffffff"
-            android:textSize="18dp" />
-
-        <TextView
-            android:id="@+id/itemdeadline"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:hint="尚未輸入"
-            android:textColor="#ffffff"
-            android:textColorHint="#ffffff"
-            android:textSize="18dp" />
-
-        <TextView
-            android:id="@+id/itemarrivaltime"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:hint="尚未輸入"
-            android:textColor="#ffffff"
-            android:textColorHint="#ffffff"
-            android:textSize="18dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout_start"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="45dp"
+        android:background="#ffffff"
         android:orientation="horizontal"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
+        app:layout_constraintTop_toTopOf="@+id/textView17">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0"
-            android:text=""
-            android:textSize="20sp" />
+        <include layout="@layout/listview_plan_layout" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="團購名目"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="集貨地點"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="截止時間"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="貨到時間"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
     </LinearLayout>
+
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="45dp"
+        android:background="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/ok"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_start2"
-
+        app:layout_constraintTop_toTopOf="@+id/textView2"
         app:layout_constraintVertical_bias="1.0" />
 
-
+    <ImageButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/ic_add_circle_black_48dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/listView"
+        app:layout_constraintRight_toRightOf="@+id/listView" />
 </android.support.constraint.ConstraintLayout>

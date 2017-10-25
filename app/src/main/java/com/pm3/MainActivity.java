@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity
 
         settinglink = (ImageButton) findViewById(R.id.settinglink);
         messagelink = (ImageButton) findViewById(R.id.messagelink);
-//        initListView();//初始設定
+        initListView();//初始設定
+
         check();//判定是否有自己的團購
 
 

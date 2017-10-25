@@ -71,7 +71,7 @@ public class GoodsFragment extends DialogFragment {
     //設定Dialog選項功能
     private void initDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("新增商品"+"修改商品")
+        builder.setTitle("新增商品")
                 .setView(mDialogView)
                 .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override

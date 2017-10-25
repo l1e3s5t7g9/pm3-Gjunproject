@@ -25,6 +25,8 @@ import com.pm3.Fragment.FollowFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.student.myapplicationxxx.R.id.itemlocation;
+import static com.example.student.myapplicationxxx.R.id.itemtopic;
 import static com.pm3.Tools.time.calendar2string;
 
 public class Follow extends AppCompatActivity
@@ -32,7 +34,7 @@ public class Follow extends AppCompatActivity
         FollowFragment.chouse,
         AdapterView.OnItemSelectedListener,
         AdapterView.OnItemClickListener,
-        AdapterView.OnItemLongClickListener{
+        AdapterView.OnItemLongClickListener {
 
     private A prm;
     FollowListAdapter FollowListAdapter;
@@ -40,6 +42,8 @@ public class Follow extends AppCompatActivity
     private ListView mListView;
     private List<Goods> mGoodsList = new ArrayList<>();
     private TextView tv_topic, tv_location, tv_deadline, tv_arrivaltime;
+    private TextView tv_發起人;
+    private Button bt_follow_plan;
     private List<Order> mOrderList = new ArrayList<>();
     private List<Integer> mQuantityList = new ArrayList<>();
     private List<String> mCommenteList = new ArrayList<>();
@@ -56,23 +60,32 @@ public class Follow extends AppCompatActivity
 
 
         Intent intent = this.getIntent();
+        initplanset();//建置版面
         //取得傳遞過來的資料
         plan = (Plan) intent.getSerializableExtra("plan");
-        tv_topic = (TextView) findViewById(R.id.名目);
-        tv_location = (TextView) findViewById(R.id.地點);
-        tv_deadline = (TextView) findViewById(R.id.截止時間);
-        tv_arrivaltime = (TextView) findViewById(R.id.預計送達時間);
+        bt_follow_plan = (Button) findViewById(R.id.follow_plan);
+
+        //發配資料
         tv_topic.setText(plan.getTopic());
+        tv_發起人.setText(plan.getOrganizer());
         tv_location.setText(plan.getLocation());
         tv_deadline.setText(calendar2string(plan.getDeadline()));
         tv_arrivaltime.setText(calendar2string(plan.getArrivaltime()));
-
 
         mGoodsList = plan.getgoodsList();
 
 
         creatList();
-        mOrderList=prm.getMyOrders(prm.getAllPublicOrders());
+        mOrderList = prm.getMyOrders(prm.getAllPublicOrders());
+        //按鈕文字設定
+        switch (mOrderList.size()) {
+            case (0):
+                bt_follow_plan.setText("跟單");
+                break;
+            default:
+                bt_follow_plan.setText("更新");
+                break;
+        }
         initListView();
         FollowListAdapter = (FollowListAdapter) mListView.getAdapter();
         FollowListAdapter.notifyDataSetChanged();
@@ -160,6 +173,13 @@ public class Follow extends AppCompatActivity
         mListView.setOnItemLongClickListener(this);//設置長案效果
     }
 
+    private void initplanset() {
+        tv_topic = (TextView) findViewById(itemtopic);
+        tv_發起人 = (TextView) findViewById(R.id.item發起人);
+        tv_location = (TextView) findViewById(itemlocation);
+        tv_deadline = (TextView) findViewById(R.id.itemdeadline);
+        tv_arrivaltime = (TextView) findViewById(R.id.itemarrivaltime);
+    }
 
     //點選ListView的項目
     @Override
@@ -179,7 +199,7 @@ public class Follow extends AppCompatActivity
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        final int 這筆訂單=position;
+        final int 這筆訂單 = position;
         new AlertDialog.Builder(this)
                 .setMessage("您確定要刪除這訂單？")
                 .setPositiveButton("刪除", new DialogInterface.OnClickListener() {

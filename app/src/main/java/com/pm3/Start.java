@@ -20,6 +20,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.student.myapplicationxxx.R;
+import com.pm3.Account.Info;
 import com.pm3.Adapter.MyListAdapter;
 import com.pm3.Class_Object.Goods;
 import com.pm3.Class_Object.Order;
@@ -33,12 +34,14 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.example.student.myapplicationxxx.R.id.itemlocation;
+import static com.example.student.myapplicationxxx.R.id.itemtopic;
 
 public class Start extends AppCompatActivity
         implements GoodsFragment.chouse,
         PlanFragment.chouse,
         AdapterView.OnItemSelectedListener,
         AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener,
         DatePicker.OnDateChangedListener,
         TimePicker.OnTimeChangedListener {
 
@@ -49,6 +52,7 @@ public class Start extends AppCompatActivity
     private String 集散地點;
     private Calendar 截止時間;
     private Calendar 預計送達時間;
+    private MyListAdapter myListAdapter;
 
 
     @Override
@@ -76,8 +80,8 @@ public class Start extends AppCompatActivity
 //                    dialog.show(getSupportFragmentManager(), "PlanFragment");
                     if (發起名目 != null || 集散地點 != null || 截止時間 != null || 預計送達時間 != null) {
 
-                        發起名目 = et_topic.getText().toString();
-                        集散地點 = et_location.getText().toString();
+                        發起名目 = tv_topic.getText().toString();
+                        集散地點 = tv_location.getText().toString();
 
                         Plan plan = 輸入資料toNewPlan();
                         Intent data = new Intent();
@@ -102,6 +106,7 @@ public class Start extends AppCompatActivity
         });
 
         initListView();
+        myListAdapter = (MyListAdapter) mListView.getAdapter();
         initplanset();
 
     }
@@ -116,6 +121,7 @@ public class Start extends AppCompatActivity
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(new MyListAdapter(this));
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);//設置長案效果
     }
 
     // ==========回上一頁==========
@@ -174,6 +180,9 @@ public class Start extends AppCompatActivity
     //點選ListView的項目
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+    }
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
         final int 商品編號 = position;
         new AlertDialog.Builder(this)
                 .setMessage("您確定要刪除這筆商品？")
@@ -181,7 +190,6 @@ public class Start extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         mGoodsList.remove(商品編號);
-                        MyListAdapter myListAdapter = (MyListAdapter) mListView.getAdapter();
                         myListAdapter.notifyDataSetChanged();
                     }
                 })
@@ -192,8 +200,8 @@ public class Start extends AppCompatActivity
                     }
                 })
                 .show();
+        return false;
     }
-
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -219,16 +227,28 @@ public class Start extends AppCompatActivity
     }
 
 
-    private EditText et_topic;
-    private EditText et_location;
+    private TextView tv_topic;
+    private TextView tv_發起人;
+    private TextView tv_location;
     private TextView et_deadline;
     private TextView et_arrivaltime;
 
     private void initplanset() {
-        et_topic = (EditText) findViewById(R.id.itemtopic);
-        et_location = (EditText) findViewById(itemlocation);
+        tv_topic = (TextView) findViewById(itemtopic);
+        tv_發起人 = (TextView) findViewById(R.id.item發起人);
+        tv_location = (TextView) findViewById(itemlocation);
         et_deadline = (TextView) findViewById(R.id.itemdeadline);
         et_arrivaltime = (TextView) findViewById(R.id.itemarrivaltime);
+        View[] v={tv_topic,tv_location,et_deadline,et_arrivaltime};
+        for (int i=0;i<v.length;i++){
+            v[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClick2(view);
+                }
+            });
+        }
+        tv_發起人.setText(Info.gId);
         sb_deadline = new StringBuffer();
         sb_arrivaltime = new StringBuffer();
     }
@@ -238,9 +258,41 @@ public class Start extends AppCompatActivity
     private StringBuffer sb_arrivaltime;
     private int year, month, day, hour, minute;
 
-    public void onClick(View v) {
+    public void onClick2(View v) {
 
         switch (v.getId()) {
+            case itemtopic:
+            case R.id.itemlocation:
+                AlertDialog.Builder builder0 = new AlertDialog.Builder(this);
+                String Title = null;
+                switch (v.getId()){
+                    case itemtopic:
+                        Title="想一個吸引大家訂購的標題吧!";
+                        break;
+                    case R.id.itemlocation:
+                        Title="之後大家要到哪裡取貨呢?";
+                        break;
+                }
+                builder0.setTitle(Title);
+                final EditText input = new EditText(this);
+//                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                builder0.setView(input);
+                final TextView tv=(TextView)v;
+                builder0.setPositiveButton("設置", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        tv.setText(input.getText().toString());
+                    }
+                });
+                builder0.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder0.setCancelable(false);// 设置点击屏幕Dialog不消失
+                builder0.show();
+                break;
             case R.id.itemdeadline:
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setPositiveButton("設置", new DialogInterface.OnClickListener() {
@@ -315,4 +367,6 @@ public class Start extends AppCompatActivity
         this.hour = hourOfDay;
         this.minute = minute;
     }
+
+
 }
