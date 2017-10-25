@@ -42,8 +42,11 @@ public class CloudSync {
     private Gson gson;
 
     private FirebaseDatabase fdb;
+    private DatabaseReference fdbref;
     private DatabaseReference refpub;
     private DatabaseReference refpri;
+
+    private static int snKey = 0;
 
     private class MSGPCK {
         List<Map<String, Object>> msgs = new ArrayList<>();
@@ -69,12 +72,13 @@ public class CloudSync {
 
         //Firebase Realtime Database
         fdb = FirebaseDatabase.getInstance();
+        fdbref = fdb.getReference();
 
 //        refpub = fdb.getReference().child("public").child("plans");
-        refpub = fdb.getReference();
+        refpub = fdbref;
         refpub.addValueEventListener(velpub);
 
-        refpri = fdb.getReference();
+        refpri = fdbref;
         refpri.addValueEventListener(velpri);
 
     }
@@ -90,12 +94,15 @@ public class CloudSync {
     }
 
     public void clear(DatabaseReference ref) {
+
         ref.removeValue();
+
     }
 
     public void clear() {
-        refpub.removeValue();
-        refpri.removeValue();
+
+        fdbref.removeValue();
+
     }
 
 
@@ -138,21 +145,17 @@ public class CloudSync {
     public void publish(List<Order> orders) {
 
         //取得筆數
-        int siz = 0;
-        List<Order> lo1 = prm.getAllPublicOrders();
-        if (lo1 != null) {
-            siz = lo1.size();
-//            List<Order> lo2 = prm.getMyPublicOrders(lo1);
-//            if (lo2 != null) {
-//                siz = lo2.size();
-//            }
-        }
+//        int siz = 0;
+//        List<Order> lo1 = prm.getAllPublicOrders();
+//        if (lo1 != null) {
+//            siz = lo1.size();
+//        }
 
         for (Order o : orders) {    //一次發送所有Order
 
             //推送
             //String -> Json
-            final String sn = String.valueOf(siz++);
+//            final String sn = String.valueOf(siz++);
             final String id = o.getOrganizer_id();  //發起者ID
 //        ordpck.ords = prm.getMyPublicOrders(prm.getAllPublicOrders());     //取出雲上所有自己的信息並加包裝
 //        List<Order> lo = prm.getMyPublicOrders(prm.getAllPublicOrders());   //取出雲上所有自己的信息並加包裝
@@ -170,7 +173,7 @@ public class CloudSync {
                 @Override
                 public Transaction.Result doTransaction(MutableData mutableData) {
 
-                    refpub.child(C_PUB).child(id).child(C_ODR + "_" + sn).setValue(finalvalue);
+                    refpub.child(C_PUB).child(id).child(C_ODR + "_" + (++snKey)).setValue(finalvalue);
 
                     return null;
                 }
@@ -285,6 +288,15 @@ public class CloudSync {
                 for (final DataSnapshot ds_ctx : dataSnapshot.child(C_PUB).child(ds.getKey()).getChildren()) {      //進入節點
 
                     if (ds_ctx.getKey().indexOf(C_ODR) == 0) {   //解出Order
+                        //解KEY編號
+                        String endKey = ds_ctx.getKey();
+                        endKey = endKey.substring(endKey.indexOf("_") + 1, endKey.length());
+                        int ser = Integer.parseInt(endKey);
+                        if (ser > snKey) {
+                            snKey = ser;
+                        }
+
+                        //解資料
                         String value = (String) ds_ctx.getValue();
                         value = deAES(value);
                         lmtmp.add(deJSON_Order(value));
@@ -406,5 +418,42 @@ public class CloudSync {
         return null;
 
     }
+
+    private void delete(DatabaseReference ref) {    //刪除指定的資料節點資料
+
+        ref.removeValue();
+
+    }
+
+    public void deleteOrders(final String plan_id, final String subscriber_id) {
+
+        fdbref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (final DataSnapshot ds : dataSnapshot.child(C_PUB).child(plan_id).getChildren()) {     //進入指定Plan的資料節點
+                    if (ds.getKey().indexOf(C_ODR) == 0) {   //解出Order
+
+                        String value = (String) ds.getValue();
+                        value = deAES(value);
+                        Order order = deJSON_Order(value);
+
+                        if (order.getSubscriber_id().equals(subscriber_id) == true) {    //刪除條件比對
+                            ds.getRef().removeValue();
+                        }
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
 
 }

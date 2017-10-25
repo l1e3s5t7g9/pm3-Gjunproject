@@ -37,15 +37,26 @@ public final class A extends Application {
 
     private List<Order> mPublicOrderList = new ArrayList<>();    //雲上所有未整理的訂購單
 
-    public List<Order> getAllPublicOrders() {
+    public List<Order> getAllPublicOrders() {       //取得雲上所有Order
         return mPublicOrderList;
+    }
+
+    public List<Order> getAllPublicPlanOrders(String plan_id) {       //取得雲上所有關於某個Plan的Order
+        List<Order> rtn = new ArrayList<>();
+        List<Order> lo = getAllPublicOrders();  //取得所有Order
+        for (Order o : lo) {                    //進行篩選
+            if (o.getOrganizer_id().equals(plan_id) == true) {
+                rtn.add(o);
+            }
+        }
+        return rtn;
     }
 
     public void setAllPublicOrders(List<Order> mPublicOrderList) {
         this.mPublicOrderList = mPublicOrderList;
     }
 
-    public List<Order> getMyPublicOrders(List<Order> orders) {
+    public List<Order> getMyPublicOrders(List<Order> orders) {          //取得雲上所有關於我的Order
         List<Order> rtn = new ArrayList<>();
         for (Order o : orders) {
             if (o.getOrganizer_id().equals(Info.gId) == true) {
@@ -55,7 +66,7 @@ public final class A extends Application {
         return rtn;
     }
 
-    public List<Order> getMyOrders(List<Order> orders) {
+    public List<Order> getMyOrders(List<Order> orders) {        //取得雲上所有關於我的Order並且是某個
         List<Order> rtn = new ArrayList<>();
         for (Order o : orders) {
             if (o.getSubscriber_id().equals(Info.gId) == true) {
@@ -65,14 +76,13 @@ public final class A extends Application {
         return rtn;
     }
 
-    public List<Order> removeMyOrders(List<Order> orders) {
-        List<Order> rtn = new ArrayList<>();
-        for (Order o : orders) {
-            if (o.getSubscriber_id().equals(Info.gId) == true) {
-                rtn.remove(o);
-            }
-        }
-        return rtn;
+    public void removeMyOrders(Plan plan) {
+
+        String my_id = Info.gId;   //取得我的ID
+        String plan_id = plan.getOrganizer_id();
+
+        mCloudSync.deleteOrders(plan_id,my_id);
+
     }
 
     public List<Plan> getAllPublicPlan() {

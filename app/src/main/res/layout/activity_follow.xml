@@ -9,6 +9,8 @@
     tools:context="com.pm3.Follow">
 
 
+
+
     <Button
 
         android:id="@+id/cancel"
@@ -56,6 +58,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
+        android:background="@android:drawable/alert_light_frame"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
@@ -66,8 +69,7 @@
             android:id="@+id/HorzontalListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill"
-            >
+            android:layout_gravity="fill">
 
         </GridLayout>
 
@@ -97,19 +99,33 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="16dp"
         android:background="@android:drawable/alert_light_frame"
+
+
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/FollowlistView"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="@+id/FollowlistView">
+        app:layout_constraintTop_toTopOf="parent">
 
         <include layout="@layout/listview_plan_layout" />
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:text="商品區："
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:background="@android:drawable/alert_light_frame"
+        app:layout_constraintLeft_toLeftOf="@+id/FollowlistView"
+        app:layout_constraintBottom_toBottomOf="@+id/HorizontalScrollView"
+        android:layout_marginBottom="30dp" />
 
 </android.support.constraint.ConstraintLayout>
 

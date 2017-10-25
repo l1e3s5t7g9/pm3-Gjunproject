@@ -76,7 +76,7 @@ public class Follow extends AppCompatActivity
 
 
         creatList();
-        mOrderList = prm.getMyOrders(prm.getAllPublicOrders());
+        mOrderList = prm.getMyOrders(prm.getAllPublicPlanOrders(plan.getOrganizer_id()));//顯示我在這個plan的orderlist
         //按鈕文字設定
         switch (mOrderList.size()) {
             case (0):
@@ -107,13 +107,22 @@ public class Follow extends AppCompatActivity
     //===========follow_plan==========
 
     public void follow_plan(View v) {
+        String msg=null;
+        switch(bt_follow_plan.getText().toString()){
+            case ("跟單"):
+                msg="您確定要送出這些訂單？";
+                break;
+            case ("更新"):
+                msg="您確定要更新成這些訂單？";
+                break;
+        }
         new AlertDialog.Builder(this)
-                .setMessage("您確定要送出這些訂單？")
+                .setMessage(msg)
                 .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        prm.removeMyOrders(prm.getAllPublicOrders());
-                        prm.addPublicOrder(mOrderList);
+                        prm.removeMyOrders(plan);   //命令刪除這個Plan中的所有我的Order
+                        prm.addPublicOrder(mOrderList);     //我的修改後Order重新上傳
 //                        plan.setordersList(mOrderList);
 //                        prm.addPublicPlan(plan);
                         finish();

@@ -121,7 +121,7 @@ public class Start extends AppCompatActivity
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(new MyListAdapter(this));
         mListView.setOnItemClickListener(this);
-        mListView.setOnItemLongClickListener(this);//設置長案效果
+        mListView.setOnItemLongClickListener(this);//設置長按效果
     }
 
     // ==========回上一頁==========
