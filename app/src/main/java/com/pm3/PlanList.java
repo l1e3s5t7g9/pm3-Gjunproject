@@ -16,6 +16,8 @@ import com.pm3.Class_Object.Plan;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.student.myapplicationxxx.R.id.itemlocation;
+import static com.example.student.myapplicationxxx.R.id.itemtopic;
 import static com.pm3.Tools.time.calendar2string;
 
 public class PlanList extends AppCompatActivity
@@ -29,6 +31,7 @@ public class PlanList extends AppCompatActivity
     private ListView mListView;
     PlanListAdapter PlanListAdapter;
     private TextView tv_topic, tv_location, tv_deadline, tv_arrivaltime,tv_合計;
+    private TextView tv_發起人;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +45,14 @@ public class PlanList extends AppCompatActivity
 
 
 
-        tv_topic = (TextView) findViewById(R.id.名目);
-        tv_location = (TextView) findViewById(R.id.地點);
-        tv_deadline = (TextView) findViewById(R.id.截止時間);
-        tv_arrivaltime = (TextView) findViewById(R.id.預計送達時間);
+        tv_topic = (TextView) findViewById(itemtopic);
+        tv_發起人 = (TextView) findViewById(R.id.item發起人);
+        tv_location = (TextView) findViewById(itemlocation);
+        tv_deadline = (TextView) findViewById(R.id.itemdeadline);
+        tv_arrivaltime = (TextView) findViewById(R.id.itemarrivaltime);
         tv_合計 = (TextView) findViewById(R.id.合計);
         tv_topic.setText(plan.getTopic());
+        tv_發起人.setText(plan.getOrganizer());
         tv_location.setText(plan.getLocation());
         tv_deadline.setText(calendar2string(plan.getDeadline()));
         tv_arrivaltime.setText(calendar2string(plan.getArrivaltime()));

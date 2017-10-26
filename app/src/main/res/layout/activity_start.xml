@@ -25,7 +25,7 @@
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/ok"
-        app:layout_constraintLeft_toLeftOf="@+id/listView" />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
 
@@ -44,7 +44,8 @@
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/listView" />
+        app:layout_constraintRight_toRightOf="parent" />
+
 
     <TextView
 
@@ -64,6 +65,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout_start2" />
 
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/board3"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout_start2"
+        app:layout_constraintLeft_toLeftOf="@+id/linearLayout_start2"
+        app:layout_constraintRight_toRightOf="@+id/linearLayout_start2"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout_start2"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
 
         android:id="@+id/textView17"
@@ -74,32 +89,13 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#ffffff"
         android:gravity="center"
         android:padding="8dp"
         android:text="發起團購"
         android:textSize="30dp"
+        android:background="#ffffff"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
-    <LinearLayout
-        android:id="@+id/linearLayout_start2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="45dp"
-        android:background="#ffffff"
-        android:orientation="horizontal"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView17">
-
-        <include layout="@layout/listview_plan_layout" />
-
-    </LinearLayout>
 
 
     <ListView
@@ -132,4 +128,28 @@
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/listView"
         app:layout_constraintRight_toRightOf="@+id/listView" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout_start2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="45dp"
+        android:orientation="vertical"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView17">
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"/>
+        <include layout="@layout/listview_plan_layout" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"/>
+    </LinearLayout>
+
+
 </android.support.constraint.ConstraintLayout>

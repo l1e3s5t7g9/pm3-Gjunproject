@@ -268,6 +268,7 @@ public class Start extends AppCompatActivity
                 switch (v.getId()){
                     case itemtopic:
                         Title="想一個吸引大家訂購的標題吧!";
+
                         break;
                     case R.id.itemlocation:
                         Title="之後大家要到哪裡取貨呢?";
