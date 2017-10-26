@@ -56,6 +56,15 @@ public final class A extends Application {
 //        return rtn;
 //    }
 
+    public Plan filterPlans_Orgid(List<Plan> plans, String filter_id) {          //過濾 發起者ID = 指定ID
+        for (Plan p : plans) {
+            if (p.getOrganizer_id().equals(filter_id) == true) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     public List<Order> filterOrders_Orgid(List<Order> orders, String filter_id) {          //過濾 發起者ID = 指定ID
         List<Order> rtn = new ArrayList<>();
         for (Order o : orders) {

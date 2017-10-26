@@ -19,6 +19,7 @@ public class Order implements Serializable {
     private Goods goods;           // 商品         // 商品
     private int 數量;
     private String notes;          // 備註(規格暫記於此)
+    private boolean 繳費=false;
 
     public Order(String organizer_id, Goods goods,int 數量, String notes) {
         this.stamp = Calendar.getInstance();
@@ -88,5 +89,13 @@ public class Order implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public boolean get繳費() {
+        return 繳費;
+    }
+
+    public void set繳費(boolean tureorfalse) {
+        this.繳費 = tureorfalse;
     }
 }

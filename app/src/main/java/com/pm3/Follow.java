@@ -114,35 +114,53 @@ public class Follow extends AppCompatActivity
     //===========follow_plan==========
 
     public void follow_plan(View v) {
-        String msg = null;
-        switch (bt_follow_plan.getText().toString()) {
-            case ("跟單"):
-                msg = "您確定要送出這些訂單？";
-                break;
-            case ("更新"):
-                msg = "您確定要更新成這些訂單？";
-                break;
-        }
-        new AlertDialog.Builder(this)
-                .setMessage(msg)
-                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        prm.removeMyOrders(plan);   //命令刪除這個Plan中的所有我的Order
-                        prm.addPublicOrder(mOrderList);     //我的修改後Order重新上傳
+
+        List<Plan> lp = prm.getAllPublicPlan();
+        Plan p = prm.filterPlans_Orgid(lp,plan.getOrganizer_id());
+
+        if(p.get截止()==false) {
+            String msg = null;
+            switch (bt_follow_plan.getText().toString()) {
+                case ("跟單"):
+                    msg = "您確定要送出這些訂單？";
+                    break;
+                case ("更新"):
+                    msg = "您確定要更新成這些訂單？";
+                    break;
+            }
+            new AlertDialog.Builder(this)
+                    .setMessage(msg)
+                    .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            prm.removeMyOrders(plan);   //命令刪除這個Plan中的所有我的Order
+                            prm.addPublicOrder(mOrderList);     //我的修改後Order重新上傳
 //                        plan.setordersList(mOrderList);
 //                        prm.addPublicPlan(plan);
-                        finish();
-                        overridePendingTransition(R.anim.push_in, R.anim.push_out);
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ;
-                    }
-                })
-                .show();
+                            finish();
+                            overridePendingTransition(R.anim.push_in, R.anim.push_out);
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ;
+                        }
+                    })
+                    .show();
+        }
+        else{
+            new AlertDialog.Builder(this)
+                    .setMessage("這次的團購已經截止了")
+                    .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                            overridePendingTransition(R.anim.push_in, R.anim.push_out);
+                        }
+                    })
+                    .show();
+        }
     }
 
 

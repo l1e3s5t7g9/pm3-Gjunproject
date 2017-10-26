@@ -1,10 +1,13 @@
 package com.pm3;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,6 +36,8 @@ public class PlanList extends AppCompatActivity
     PlanListAdapter PlanListAdapter;
     private TextView tv_topic, tv_location, tv_deadline, tv_arrivaltime,tv_合計;
     private TextView tv_發起人;
+    private Button bt_截止;
+    Plan plan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,7 @@ public class PlanList extends AppCompatActivity
 
         prm = (A) getApplication();
 
-        Plan plan = (Plan) prm.getMyPublicPlan();
+        plan = (Plan) prm.getMyPublicPlan();
 
 
 
@@ -57,6 +62,13 @@ public class PlanList extends AppCompatActivity
         tv_location.setText(plan.getLocation());
         tv_deadline.setText(calendar2string(plan.getDeadline()));
         tv_arrivaltime.setText(calendar2string(plan.getArrivaltime()));
+        bt_截止=(Button)findViewById(R.id.Stop);
+        bt_截止.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Stop();
+            }
+        });
 
         initListView();
 
@@ -83,6 +95,15 @@ public class PlanList extends AppCompatActivity
         tv_合計.setText(合計int + "");
         PlanListAdapter = (PlanListAdapter) mListView.getAdapter();
         PlanListAdapter.notifyDataSetChanged();
+
+        List<Plan> lp = prm.getAllPublicPlan();
+        Plan p = prm.filterPlans_Orgid(lp,plan.getOrganizer_id());
+
+        if(p.get截止()){
+            bt_截止.setText("結束");
+        }
+
+
     }
 
 
@@ -123,6 +144,53 @@ public class PlanList extends AppCompatActivity
 
     private Handler han;
     private Runnable runn;
+
+    public void Stop() {
+        String text=bt_截止.getText().toString();
+        switch (text){
+            case "截止":
+                new AlertDialog.Builder(this)
+                        .setTitle("您確定要截止這次的團購嗎?")
+                        .setMessage("截止之後，其他人將不能更新或增加他們的訂單。")
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                plan.set截止(true);
+                                prm.addPublicPlan(plan);
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ;
+                            }
+                        })
+                        .show();
+                break;
+            case "結束":
+                new AlertDialog.Builder(this)
+                        .setTitle("您確定要結束這次的團購嗎?")
+                        .setMessage("結束之後，這次的團購將會封存。\n您還是可以到紀錄查看")
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                prm.finishMyPlan();
+                                finish();
+                                overridePendingTransition(R.anim.push_in, R.anim.push_out);
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ;
+                            }
+                        })
+                        .show();
+                break;
+        }
+
+    }
+
     private class runnUpdate implements Runnable {
         @Override
         public void run() {

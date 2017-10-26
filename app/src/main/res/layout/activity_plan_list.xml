@@ -41,7 +41,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/button"
-        android:onClick="Stop"
         android:text="截止"
         android:textColor="#FFFFFF"
         android:textSize="20dp"

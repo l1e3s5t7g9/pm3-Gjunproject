@@ -20,6 +20,7 @@ public class Plan implements Serializable {
     private String topic;           // 發起名目
     private List<Goods> goods;      // 發起商品
     private List<Order> orders;     // 訂單
+    private boolean 截止=false;      //截止訂購
 //    private List<Map<String, Object>> msgarr = new ArrayList<>(); // 信息
 
     public Plan(String location, Calendar deadline, Calendar arrivaltime, String topic, List<Goods> goods, List<Order> orders) {
@@ -116,6 +117,18 @@ public class Plan implements Serializable {
     public void setordersList(List<Order> orders) {
         this.orders = orders;
     }
+
+    public boolean get截止() {
+        return 截止;
+    }
+
+    public void set截止(boolean tureorfalse) {
+        this.截止 = tureorfalse;
+    }
+
+
+
+
 //    public Goods setGoods(int g, Goods item) {
 //        return goods.set(g, item);
 //    }
