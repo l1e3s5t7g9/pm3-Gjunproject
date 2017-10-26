@@ -9,7 +9,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -17,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.student.myapplicationxxx.R;
 import com.pm3.Account.Sign;
@@ -25,15 +23,14 @@ import com.pm3.Adapter.OnlinListAdapter;
 import com.pm3.Class_Object.Goods;
 import com.pm3.Class_Object.Order;
 import com.pm3.Class_Object.Plan;
-import com.pm3.Network.Net;
 import com.pm3.Network.CloudSync;
+import com.pm3.Network.Net;
 import com.pm3.Tools.Notice;
 import com.pm3.Tools.time;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -363,9 +360,9 @@ public class MainActivity extends AppCompatActivity
 
     //吐司方法
     public void 處理訊息(String string) {
-        Toast toast = Toast.makeText(MainActivity.this, string, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+//        Toast toast = Toast.makeText(MainActivity.this, string, Toast.LENGTH_SHORT);
+//        toast.setGravity(Gravity.CENTER, 0, 0);
+//        toast.show();
     }
 
     @Override

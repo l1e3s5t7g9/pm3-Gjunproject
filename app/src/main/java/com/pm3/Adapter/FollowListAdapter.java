@@ -52,11 +52,15 @@ public class FollowListAdapter extends BaseAdapter {
         Order order = activity.getmOrderList().get(position);                              //order資料來源
 
         //設定資料//
-        tvItemId.setText("id");
+//        tvItemId.setText("");
         tvItemGoods.setText(order.getGoods().getgoods());
         tvItemPrice.setText(String.valueOf(order.getGoods().getprice()));
         tvItemQuantity.setText(String.valueOf(order.get數量()));
         tvItemCommente.setText(order.getNotes());
+        if (order.get繳費()) {
+            tvItemId.setText("[已繳費]");
+            tvItemId.setTextColor(0xffff4081);
+        }
         return v;
     }
 }

@@ -65,13 +65,17 @@ public class PlanListAdapter extends BaseAdapter {
         String Commente = order.getNotes();
 
         //設定資料//
-        tvItemId.setText("id");
+        tvItemId.setText("");
         tvItemSubscriber.setText(Subscriber);
         tvItemGoods.setText(Goods);
         tvItemprice.setText(""+price+"元");
         tvItem數量.setText(""+數量);
         tvItem總價.setText(""+總價 + "元");
         tvItemCommente.setText(Commente);
+        if (order.get繳費()) {
+            tvItemId.setText("[已繳費]");
+            tvItemId.setTextColor(0xffff4081);
+        }
         return v;
     }
 

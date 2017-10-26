@@ -75,7 +75,7 @@ public final class A extends Application {
         return rtn;
     }
 
-    public List<Order> filterOrders_Subid(List<Order> orders,String filter_id) {        //過濾 下訂者ID = 指定ID
+    public List<Order> filterOrders_Subid(List<Order> orders, String filter_id) {        //過濾 下訂者ID = 指定ID
         List<Order> rtn = new ArrayList<>();
         for (Order o : orders) {
             if (o.getSubscriber_id().equals(filter_id) == true) {
@@ -90,17 +90,22 @@ public final class A extends Application {
         String my_id = Info.gId;   //取得我的ID
         String plan_id = plan.getOrganizer_id();
 
-        mCloudSync.deleteOrders(plan_id,my_id);
+        mCloudSync.deleteOrders(plan_id, my_id);
 
     }
 
-    public void finishMyPlan(){     //整理封存至雲端
+    public void updateMyOrders(Plan delOrder, List<Order> addOrders) {
+        removeMyOrders(delOrder);   //命令刪除這個Plan中的所有我的Order
+        addPublicOrder(addOrders);  //我的修改後Order重新上傳
+    }
+
+    public void finishMyPlan() {     //整理封存至雲端
 
         String plan_id = Info.gId;
         Plan plan = getMyPublicPlan();
 
         List<Order> orders = getAllPublicOrders();
-        orders = filterOrders_Orgid(orders,plan_id);   //取得關於這個Plan的Order
+        orders = filterOrders_Orgid(orders, plan_id);   //取得關於這個Plan的Order
 
         plan.setordersList(orders);
 
@@ -112,6 +117,18 @@ public final class A extends Application {
 
     public List<Plan> getAllPublicPlan() {
         return mPublicPlanList;
+    }
+
+    public void setAllPublicPlan(List<Plan> plans) {
+        this.mPublicPlanList = plans;
+    }
+
+    public List<Plan> getAllPrivatePlan() {
+        return mPrivatePlanList;
+    }
+
+    public void setAllPrivatePlan(List<Plan> plans) {
+        this.mPrivatePlanList = plans;
     }
 
     public List<Map<String, Object>> seqMsg(List<Map<String, Object>> lm) {
@@ -141,16 +158,12 @@ public final class A extends Application {
         return rtn;
     }
 
-    public void setAllPublicPlan(List<Plan> planarr) {
-        mPublicPlanList = planarr;
-    }
-
     public void setAllPublicMessage(List<Map<String, Object>> messages) {
         if (messages == null || messages.size() <= 0) {
-            return;
+            mPublicMessageList = messages;
+        } else {
+            mPublicMessageList = seqMsg(messages); //排序
         }
-//        mPublicMessageList = messages;
-        mPublicMessageList = seqMsg(messages); //排序
     }
 
     public Plan getPlan(int item) {
@@ -218,7 +231,7 @@ public final class A extends Application {
 
     public Map<String, Object> getMsgLatest(List<Map<String, Object>> lm) {
 
-        return lm.get(lm.size()-1);
+        return lm.get(lm.size() - 1);
 
     }
 

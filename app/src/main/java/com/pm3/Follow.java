@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.student.myapplicationxxx.R;
 import com.pm3.Account.Info;
@@ -133,8 +131,9 @@ public class Follow extends AppCompatActivity
                     .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            prm.removeMyOrders(plan);   //命令刪除這個Plan中的所有我的Order
-                            prm.addPublicOrder(mOrderList);     //我的修改後Order重新上傳
+                            prm.updateMyOrders(plan,mOrderList);//更新雲上order資料
+//                            prm.removeMyOrders(plan);
+//                            prm.addPublicOrder(mOrderList);
 //                        plan.setordersList(mOrderList);
 //                        prm.addPublicPlan(plan);
                             finish();
@@ -150,19 +149,21 @@ public class Follow extends AppCompatActivity
                     .show();
         }
         else{
-            new AlertDialog.Builder(this)
-                    .setMessage("這次的團購已經截止了")
-                    .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                            overridePendingTransition(R.anim.push_in, R.anim.push_out);
-                        }
-                    })
-                    .show();
+            團購截止();
         }
     }
 
+    private void 團購截止(){
+        new AlertDialog.Builder(this)
+                .setMessage("這次的團購已經截止了")
+                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
+    }
 
     public List<Goods> getmGoodsList() {
         return mGoodsList;
@@ -185,9 +186,14 @@ public class Follow extends AppCompatActivity
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogFragment dialog = new FollowFragment(mGoodsList.get(finalI));
-                    dialog.show(getSupportFragmentManager(), "FollowFragment");
-
+                    List<Plan> lp = prm.getAllPublicPlan();
+                    Plan p = prm.filterPlans_Orgid(lp,plan.getOrganizer_id());
+                    if(p.get截止()==false) {
+                        DialogFragment dialog = new FollowFragment(mGoodsList.get(finalI));
+                        dialog.show(getSupportFragmentManager(), "FollowFragment");
+                    }else{
+                        團購截止();
+                    }
                 }
             });
             HorzontalListView.addView(button);
@@ -234,23 +240,36 @@ public class Follow extends AppCompatActivity
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         final int 這筆訂單 = position;
-        new AlertDialog.Builder(this)
-                .setMessage("您確定要刪除這訂單？")
-                .setPositiveButton("刪除", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        mOrderList.remove(這筆訂單);
+        String msg="";
+        if(mOrderList.get(這筆訂單).get繳費()){
+            msg="(已繳費)";
+        }
 
-                        FollowListAdapter.notifyDataSetChanged();//更新畫面
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ;
-                    }
-                })
-                .show();
+        List<Plan> lp = prm.getAllPublicPlan();
+        Plan p = prm.filterPlans_Orgid(lp,plan.getOrganizer_id());
+
+        if(p.get截止()==false) {
+            new AlertDialog.Builder(this)
+                    .setMessage("您確定要刪除這訂單？" + msg)
+                    .setPositiveButton("刪除", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            mOrderList.remove(這筆訂單);
+
+                            FollowListAdapter.notifyDataSetChanged();//更新畫面
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ;
+                        }
+                    })
+                    .show();
+        }else{
+            團購截止();
+        }
+
         return false;
     }
 
@@ -272,9 +291,9 @@ public class Follow extends AppCompatActivity
 
     @Override
     public void 處理訊息(String String) {
-        Toast toast = Toast.makeText(Follow.this, String, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+//          = .makeText(Follow.this, String, .LENGTH_SHORT);
+//        .setGravity(Gravity.CENTER, 0, 0);
+//        .show();
     }
 
 }

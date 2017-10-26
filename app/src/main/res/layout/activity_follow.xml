@@ -22,7 +22,7 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/button"
         android:onClick="cancel"
-        android:text="取消"
+        android:text="返回"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -27,7 +27,8 @@ import static com.pm3.Tools.time.calendar2string;
 public class PlanList extends AppCompatActivity
         implements
         AdapterView.OnItemSelectedListener,
-        AdapterView.OnItemClickListener {
+        AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener {
 
     A prm;
 
@@ -112,6 +113,7 @@ public class PlanList extends AppCompatActivity
         mListView = (ListView) findViewById(R.id.PlanlistView);
         mListView.setAdapter(new PlanListAdapter(this));
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);//設置長案效果
     }
 
     // ==========回上一頁==========
@@ -189,6 +191,34 @@ public class PlanList extends AppCompatActivity
                 break;
         }
 
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+        final int 這筆訂單 = position;
+        final Order order=mPrivatePlanList.get(這筆訂單);
+        new AlertDialog.Builder(this)
+                .setMessage("這筆訂單繳費了？")
+                .setPositiveButton("是的", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        order.set繳費(true);
+                        mPrivatePlanList.remove(這筆訂單);
+                        mPrivatePlanList.add(order);
+                        prm.updateMyOrders(plan,mPrivatePlanList);//更新雲上order資料
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        order.set繳費(false);
+                    }
+                })
+                .show();
+
+
+        PlanListAdapter.notifyDataSetChanged();//更新畫面
+        return false;
     }
 
     private class runnUpdate implements Runnable {

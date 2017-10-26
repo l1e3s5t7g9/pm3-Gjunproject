@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -17,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.student.myapplicationxxx.R;
 import com.pm3.Account.Info;
@@ -172,9 +170,9 @@ public class Start extends AppCompatActivity
 
     @Override
     public void 處理訊息(String string) {
-        Toast toast = Toast.makeText(Start.this, string, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+//        Toast toast = Toast.makeText(Start.this, string, Toast.LENGTH_SHORT);
+//        toast.setGravity(Gravity.CENTER, 0, 0);
+//        toast.show();
     }
 
     //點選ListView的項目

@@ -14,7 +14,6 @@ import com.pm3.Account.Info;
 import com.pm3.Class_Object.Order;
 import com.pm3.Class_Object.Plan;
 import com.pm3.MainActivity;
-import com.pm3.MessageActivity;
 import com.pm3.Tools.AES;
 
 import java.lang.reflect.Type;
@@ -88,11 +87,6 @@ public class CloudSync {
 
     public void publish(final String zone, Plan plan) {
 
-//        //設定 realtime database 路徑
-//        if (onlineId.equals(Info.gId) == false) {
-//            setUser();
-//        }
-
         //推送
         //String -> Json
         final String id = plan.getOrganizer_id();
@@ -124,24 +118,12 @@ public class CloudSync {
 
     public void publish(List<Order> orders) {
 
-        //取得筆數
-//        int siz = 0;
-//        List<Order> lo1 = prm.getAllPublicOrders();
-//        if (lo1 != null) {
-//            siz = lo1.size();
-//        }
-
         for (Order o : orders) {    //一次發送所有Order
 
             //推送
-            //String -> Json
-//            final String sn = String.valueOf(siz++);
             final String id = o.getOrganizer_id();  //發起者ID
-//        ordpck.ords = prm.filterOrders_Orgid(prm.getAllPublicOrders());     //取出雲上所有自己的信息並加包裝
-//        List<Order> lo = prm.filterOrders_Orgid(prm.getAllPublicOrders());   //取出雲上所有自己的信息並加包裝
-//        for (Order o : order) {
-//            lo.add(o);
-//        }
+
+            //String -> Json
             String value = gson.toJson(o);
 
             //AES 加密
@@ -203,37 +185,6 @@ public class CloudSync {
         public void onDataChange(DataSnapshot dataSnapshot) {
 
             //拉取Message
-//            List<Map<String, Object>> lm = new ArrayList<>();
-//            for (final DataSnapshot ds : dataSnapshot.child("pub").child("messages").getChildren()) {
-//
-//                String key = ds.getKey();
-//                String value = (String) ds.getValue();
-//
-//                //AES 解密
-//                if (value == null) {
-//                    return;
-//                }
-//                value = AES.decrypt(prm.AES_KEY, value);
-//
-////                List<Map<String, Object>> message = new ArrayList<>();
-//                //解Json
-//                try {
-//                    Type typ = new TypeToken<MSGPCK>() {
-//                    }.getType();
-//                    msgpck = gson.fromJson(value, typ);
-//                } catch (RuntimeException e) {
-//                    ;
-//                }
-//
-////                if (message.size() > 0) {
-//                for (Map<String, Object> mso : msgpck.msgs) {
-//                    lm.add(mso);
-//                }
-////                }
-//            }
-
-
-            //拉取Message
             List<Map<String, Object>> lm = new ArrayList<>();
             for (final DataSnapshot ds : dataSnapshot.child(C_PUB).getChildren()) {     //拉取所有資料節點
                 for (final DataSnapshot ds_ctx : dataSnapshot.child(C_PUB).child(ds.getKey()).getChildren()) {      //進入節點
@@ -249,19 +200,6 @@ public class CloudSync {
                 }
             }
             prm.setAllPublicMessage(lm);
-
-
-
-//
-//            //拉取Orders
-//            List<Map<String, Object>> lmorder = new ArrayList<>();
-//            for (final DataSnapshot ds : dataSnapshot.child("pub").child("orders").getChildren()) {
-//                lmorder.add(new HashMap<String, Object>() {
-//                    {
-//                        put(ds.getKey(), ds.getValue());
-//                    }
-//                });
-//            }
 
             //拉取Order
             List<Order> lmtmp = new ArrayList<>();
@@ -320,6 +258,7 @@ public class CloudSync {
                     }
                 }
             }
+            prm.setAllPrivatePlan(lppri);
 
         }
 
@@ -329,23 +268,6 @@ public class CloudSync {
         }
     };
 
-
-//    private ValueEventListener velpri = new ValueEventListener() {
-//        @Override
-//        public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//            //拉取資料
-////            String value = dataSnapshot.getValue(String.class);
-//
-//        }
-//
-//        @Override
-//        public void onCancelled(DatabaseError databaseError) {
-//
-//        }
-//    };
-
-
     private String deAES(String value) {
         //AES 解密
         if (value == null) {
@@ -354,17 +276,6 @@ public class CloudSync {
             return AES.decrypt(prm.AES_KEY, value);
         }
     }
-
-//    private Object deJSON(String value, Type typ) {
-////  Type -> new TypeToken<Plan>() {}.getType();
-//        //解Json
-//        try {
-//            return gson.fromJson(value, typ);
-//        } catch (RuntimeException e) {
-//            ;
-//        }
-//        return null;
-//    }
 
     private Plan deJSON_Plan(String value) {
 
@@ -440,7 +351,6 @@ public class CloudSync {
                         Order order = deJSON_Order(value);
 
                         if (order.getSubscriber_id().equals(subscriber_id) == true) {    //刪除條件比對
-//                            ds.getRef().removeValue();
                             clear(ds.getRef());
                         }
 
