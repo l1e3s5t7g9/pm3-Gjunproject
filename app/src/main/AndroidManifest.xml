@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.student.myapplicationxxx">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <application
+        android:name="com.pm3.A"
+        android:allowBackup="true"
+        android:icon="@drawable/twclogo4"
+        android:label="午後三時"
+        android:roundIcon="@drawable/twclogo4"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.pm3.MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.pm3.Start"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.pm3.Cover"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.pm3.Follow" />
+        <activity android:name="com.pm3.PlanList" />
+        <activity android:name="com.pm3.MessageActivity"></activity>
+    </application>
+
+</manifest>
