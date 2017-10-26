@@ -72,7 +72,7 @@
         android:layout_marginRight="0dp"
         android:layout_marginTop="8dp"
         android:scaleType="fitXY"
-        android:src="@drawable/board3"
+        android:src="@drawable/board9"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout_start2"
         app:layout_constraintLeft_toLeftOf="@+id/linearLayout_start2"
         app:layout_constraintRight_toRightOf="@+id/linearLayout_start2"
@@ -91,9 +91,9 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:padding="8dp"
-        android:text="發起團購"
+        android:text="發起團購    "
         android:textSize="30dp"
-        android:background="#ffffff"
+        android:background="@android:drawable/btn_dropdown"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -135,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="40dp"
         android:orientation="vertical"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -144,11 +144,11 @@
 
         <View
             android:layout_width="wrap_content"
-            android:layout_height="10dp"/>
+            android:layout_height="20dp"/>
         <include layout="@layout/listview_plan_layout" />
         <View
             android:layout_width="wrap_content"
-            android:layout_height="10dp"/>
+            android:layout_height="15dp"/>
     </LinearLayout>
 
 

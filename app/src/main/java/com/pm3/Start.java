@@ -248,7 +248,7 @@ public class Start extends AppCompatActivity
                 }
             });
         }
-        tv_發起人.setText(Info.gId);
+        tv_發起人.setText(Info.gDisplayNameNick);
         sb_deadline = new StringBuffer();
         sb_arrivaltime = new StringBuffer();
     }

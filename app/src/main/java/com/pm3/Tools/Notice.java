@@ -33,17 +33,15 @@ public class Notice {
 
             sb.append("＜尚未連接網路＞");
 
-        } else if ((prm.getMyPublicPlan() == null)    //無 Plan
-                || (prm.getMsgSiz(prm.getMyPublicMsgs(prm.getAllPublicMsgs())) <= 0)        //無我的公開 Plan 訊息
-                ) {
+        } else if (Info.gId.equals(NO_SIGN) == true) {    //尚未登入
 
-            if (Info.gId.equals(NO_SIGN) == true) {    //尚未登入
-                sb.append("＜正在登入帳戶＞");
-            } else {                                    //已登入
-                sb.append("　　　　　　　(❛◡❛✿)");     //預設訊息 Line 1
-                sb.append("\n");
-                sb.append("(╭￣3￣)╭♡");     //預設訊息 Line 2
-            }
+            sb.append("＜正在登入帳戶＞");
+
+        } else if (prm.getAllPublicMsgs().size() <= 0) {                                    //已登入無訊息
+
+            sb.append("　　　　　　　(❛◡❛✿)");     //預設訊息 Line 1
+            sb.append("\n");
+            sb.append("(╭￣3￣)╭♡");     //預設訊息 Line 2
 
         } else {                         //有訊息
 

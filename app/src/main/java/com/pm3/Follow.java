@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.student.myapplicationxxx.R;
+import com.pm3.Account.Info;
 import com.pm3.Adapter.FollowListAdapter;
 import com.pm3.Class_Object.Goods;
 import com.pm3.Class_Object.Order;
@@ -74,9 +75,15 @@ public class Follow extends AppCompatActivity
 
         mGoodsList = plan.getgoodsList();
 
-
         creatList();
-        mOrderList = prm.getMyOrders(prm.getAllPublicPlanOrders(plan.getOrganizer_id()));//顯示我在這個plan的orderlist
+
+//        mOrderList = prm.filterOrders_Subid(prm.getAllPublicPlanOrders(plan.getOrganizer_id()));//顯示我在這個plan的orderlist
+        //顯示我在這個plan的orderlist
+        List<Order> lo = prm.getAllPublicOrders();  //取得所有Order
+        String plan_id = plan.getOrganizer_id();     //取得這個Plan的ID (發起者ID)
+        lo = prm.filterOrders_Orgid(lo, plan_id);   //過濾條件 -> 發起者 = plan_id
+        mOrderList = prm.filterOrders_Subid(lo, Info.gId);  //過濾條件 -> 下訂者 = 本機登入ID
+
         //按鈕文字設定
         switch (mOrderList.size()) {
             case (0):
@@ -107,13 +114,13 @@ public class Follow extends AppCompatActivity
     //===========follow_plan==========
 
     public void follow_plan(View v) {
-        String msg=null;
-        switch(bt_follow_plan.getText().toString()){
+        String msg = null;
+        switch (bt_follow_plan.getText().toString()) {
             case ("跟單"):
-                msg="您確定要送出這些訂單？";
+                msg = "您確定要送出這些訂單？";
                 break;
             case ("更新"):
-                msg="您確定要更新成這些訂單？";
+                msg = "您確定要更新成這些訂單？";
                 break;
         }
         new AlertDialog.Builder(this)

@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.student.myapplicationxxx.R;
+import com.pm3.Account.Info;
 import com.pm3.Adapter.PlanListAdapter;
 import com.pm3.Class_Object.Order;
 import com.pm3.Class_Object.Plan;
@@ -69,15 +70,17 @@ public class PlanList extends AppCompatActivity
 
     public void alwaysrun(){
         mPrivatePlanList.clear();
-        for (Order o:prm.getMyPublicOrders(prm.getAllPublicOrders())) {
+        List<Order> lo = prm.getAllPublicOrders();
+        lo = prm.filterOrders_Orgid(lo, Info.gId);
+        for (Order o : lo) {
             mPrivatePlanList.add(o);
         }
 
-        int 合計int=0;
-        for(int i=0;i<mPrivatePlanList.size();i++){
-            合計int=合計int+mPrivatePlanList.get(i).get總價();
+        int 合計int = 0;
+        for (int i = 0; i < mPrivatePlanList.size(); i++) {
+            合計int = 合計int + mPrivatePlanList.get(i).get總價();
         }
-        tv_合計.setText(合計int+"");
+        tv_合計.setText(合計int + "");
         PlanListAdapter = (PlanListAdapter) mListView.getAdapter();
         PlanListAdapter.notifyDataSetChanged();
     }

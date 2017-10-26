@@ -41,35 +41,35 @@ public final class A extends Application {
         return mPublicOrderList;
     }
 
-    public List<Order> getAllPublicPlanOrders(String plan_id) {       //取得雲上所有關於某個Plan的Order
-        List<Order> rtn = new ArrayList<>();
-        List<Order> lo = getAllPublicOrders();  //取得所有Order
-        for (Order o : lo) {                    //進行篩選
-            if (o.getOrganizer_id().equals(plan_id) == true) {
-                rtn.add(o);
-            }
-        }
-        return rtn;
-    }
-
     public void setAllPublicOrders(List<Order> mPublicOrderList) {
         this.mPublicOrderList = mPublicOrderList;
     }
 
-    public List<Order> getMyPublicOrders(List<Order> orders) {          //取得雲上所有關於我的Order
+//    public List<Order> getAllPublicPlanOrders(String plan_id) {       //過濾出關於某個Plan的Order
+//        List<Order> rtn = new ArrayList<>();
+//        List<Order> lo = getAllPublicOrders();  //取得所有Order
+//        for (Order o : lo) {                    //進行篩選
+//            if (o.getOrganizer_id().equals(plan_id) == true) {
+//                rtn.add(o);
+//            }
+//        }
+//        return rtn;
+//    }
+
+    public List<Order> filterOrders_Orgid(List<Order> orders, String filter_id) {          //過濾 發起者ID = 指定ID
         List<Order> rtn = new ArrayList<>();
         for (Order o : orders) {
-            if (o.getOrganizer_id().equals(Info.gId) == true) {
+            if (o.getOrganizer_id().equals(filter_id) == true) {
                 rtn.add(o);
             }
         }
         return rtn;
     }
 
-    public List<Order> getMyOrders(List<Order> orders) {        //取得雲上所有關於我的Order並且是某個
+    public List<Order> filterOrders_Subid(List<Order> orders,String filter_id) {        //過濾 下訂者ID = 指定ID
         List<Order> rtn = new ArrayList<>();
         for (Order o : orders) {
-            if (o.getSubscriber_id().equals(Info.gId) == true) {
+            if (o.getSubscriber_id().equals(filter_id) == true) {
                 rtn.add(o);
             }
         }
@@ -84,6 +84,22 @@ public final class A extends Application {
         mCloudSync.deleteOrders(plan_id,my_id);
 
     }
+
+    public void finishMyPlan(){     //整理封存至雲端
+
+        String plan_id = Info.gId;
+        Plan plan = getMyPublicPlan();
+
+        List<Order> orders = getAllPublicOrders();
+        orders = filterOrders_Orgid(orders,plan_id);   //取得關於這個Plan的Order
+
+        plan.setordersList(orders);
+
+        mCloudSync.uptoCloud(plan);
+        mCloudSync.deletePlanPackage(plan_id);
+
+    }
+
 
     public List<Plan> getAllPublicPlan() {
         return mPublicPlanList;
@@ -155,15 +171,15 @@ public final class A extends Application {
 
     public void addPublicPlan(Plan plan) {
 //        mPublicPlanList.add(plan);
-        uptoCloud(plan, null, null);    //更新雲端
+        mCloudSync.uptoCloud(plan, null, null);    //更新雲端
     }
 
     public void addMyPublicMsg(Map<String, Object> hm) {
-        uptoCloud(null, null, hm);    //更新雲端
+        mCloudSync.uptoCloud(null, null, hm);    //更新雲端
     }
 
     public void addPublicOrder(List<Order> orders) {
-        uptoCloud(null, orders, null);
+        mCloudSync.uptoCloud(null, orders, null);
     }
 
     public List<Map<String, Object>> getAllPublicMsgs() {
@@ -192,23 +208,8 @@ public final class A extends Application {
 
 
     public Map<String, Object> getMsgLatest(List<Map<String, Object>> lm) {
-//        return lm.get(lm.size() - 1);
-        return lm.get(0);
-    }
 
-    public void uptoCloud(Plan pushPlan, List<Order> pushOrder, Map<String, Object> pushMsg) {      //更新雲端
-
-        if (mCloudSync != null) {
-            if (pushPlan != null) {
-                mCloudSync.publish(pushPlan);    //發佈Plan資料
-            }
-            if (pushOrder != null) {
-                mCloudSync.publish(pushOrder);   //發佈Order資料
-            }
-            if (pushMsg != null) {
-                mCloudSync.publish(pushMsg);      //發佈Message資料
-            }
-        }
+        return lm.get(lm.size()-1);
 
     }
 

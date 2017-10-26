@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.student.myapplicationxxx.R;
 import com.pm3.Account.Info;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class MessageActivity extends AppCompatActivity {
     private A prm;
 
     private EditText et;
+    private List<Map<String, Object>> lm;
     private ListView lv;
     private SimpleAdapter sa;
 
@@ -54,6 +56,9 @@ public class MessageActivity extends AppCompatActivity {
         tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("3").setContent(R.id.tab3));
 
         prm = (A) getApplication();
+
+        //初始化ListView
+        initListView();
 
         //EditText
         et = (EditText) findViewById(R.id.editTextMessage);
@@ -86,8 +91,10 @@ public class MessageActivity extends AppCompatActivity {
 
     private void initListView() {
 
-        List<Map<String, Object>> lm = prm.getAllPublicMsgs();
-
+        lm = new ArrayList<>();
+        for (Map<String, Object> mso : prm.getAllPublicMsgs()) {
+            lm.add(mso);
+        }
         sa = new SimpleAdapter(
                 this,
                 lm,
@@ -108,6 +115,19 @@ public class MessageActivity extends AppCompatActivity {
 //            }
 //        });
 //        lv.setAdapter(aa);
+    }
+
+    public void updateListView() {
+
+        //重塞資料
+        lm.clear();
+        for (Map<String, Object> mso : prm.getAllPublicMsgs()) {
+            lm.add(mso);
+        }
+
+        //通知Adapter更新ListView
+        sa.notifyDataSetChanged();
+
     }
 
     private void sendMessage() {
@@ -162,7 +182,7 @@ public class MessageActivity extends AppCompatActivity {
         public void run() {
 
             han.postDelayed(this, 500);     //定時
-            initListView();                 //更新ListView
+            updateListView();                 //更新Message ListView
 
         }
     }

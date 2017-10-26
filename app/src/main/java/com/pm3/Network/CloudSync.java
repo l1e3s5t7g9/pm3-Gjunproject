@@ -14,6 +14,7 @@ import com.pm3.Account.Info;
 import com.pm3.Class_Object.Order;
 import com.pm3.Class_Object.Plan;
 import com.pm3.MainActivity;
+import com.pm3.MessageActivity;
 import com.pm3.Tools.AES;
 
 import java.lang.reflect.Type;
@@ -42,9 +43,7 @@ public class CloudSync {
     private Gson gson;
 
     private FirebaseDatabase fdb;
-    private DatabaseReference fdbref;
-    private DatabaseReference refpub;
-    private DatabaseReference refpri;
+    private DatabaseReference ref;
 
     private static int snKey = 0;
 
@@ -72,14 +71,8 @@ public class CloudSync {
 
         //Firebase Realtime Database
         fdb = FirebaseDatabase.getInstance();
-        fdbref = fdb.getReference();
-
-//        refpub = fdb.getReference().child("public").child("plans");
-        refpub = fdbref;
-        refpub.addValueEventListener(velpub);
-
-        refpri = fdbref;
-        refpri.addValueEventListener(velpri);
+        ref = fdb.getReference();
+        ref.addValueEventListener(vel);
 
     }
 
@@ -87,26 +80,13 @@ public class CloudSync {
 
         onlineId = Info.gId;
 
-        refpri.removeEventListener(velpri);
-        refpri = fdb.getReference().child(C_PRI).child(onlineId).child(C_PLN);
-        refpri.addValueEventListener(velpri);
+        ref.removeEventListener(vel);
+        ref = fdb.getReference().child(C_PRI).child(onlineId).child(C_PLN);
+        ref.addValueEventListener(vel);
 
     }
 
-    public void clear(DatabaseReference ref) {
-
-        ref.removeValue();
-
-    }
-
-    public void clear() {
-
-        fdbref.removeValue();
-
-    }
-
-
-    public void publish(Plan plan) {
+    public void publish(final String zone, Plan plan) {
 
 //        //設定 realtime database 路徑
 //        if (onlineId.equals(Info.gId) == false) {
@@ -123,11 +103,11 @@ public class CloudSync {
 
         //Write to Realtime Database
         final String finalvalue = value;
-        refpub.runTransaction(new Transaction.Handler() {
+        ref.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
 
-                refpub.child(C_PUB).child(id).child(C_PLN).setValue(finalvalue);
+                ref.child(zone).child(id).child(C_PLN).setValue(finalvalue);
 
                 return null;
             }
@@ -157,8 +137,8 @@ public class CloudSync {
             //String -> Json
 //            final String sn = String.valueOf(siz++);
             final String id = o.getOrganizer_id();  //發起者ID
-//        ordpck.ords = prm.getMyPublicOrders(prm.getAllPublicOrders());     //取出雲上所有自己的信息並加包裝
-//        List<Order> lo = prm.getMyPublicOrders(prm.getAllPublicOrders());   //取出雲上所有自己的信息並加包裝
+//        ordpck.ords = prm.filterOrders_Orgid(prm.getAllPublicOrders());     //取出雲上所有自己的信息並加包裝
+//        List<Order> lo = prm.filterOrders_Orgid(prm.getAllPublicOrders());   //取出雲上所有自己的信息並加包裝
 //        for (Order o : order) {
 //            lo.add(o);
 //        }
@@ -169,11 +149,11 @@ public class CloudSync {
 
             //Write to Realtime Database
             final String finalvalue = value;
-            refpub.runTransaction(new Transaction.Handler() {
+            ref.runTransaction(new Transaction.Handler() {
                 @Override
                 public Transaction.Result doTransaction(MutableData mutableData) {
 
-                    refpub.child(C_PUB).child(id).child(C_ODR + "_" + (++snKey)).setValue(finalvalue);
+                    ref.child(C_PUB).child(id).child(C_ODR + "_" + (++snKey)).setValue(finalvalue);
 
                     return null;
                 }
@@ -201,11 +181,11 @@ public class CloudSync {
 
         //Write to Realtime Database
         final String finalvalue = value;
-        refpub.runTransaction(new Transaction.Handler() {
+        ref.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
 
-                refpub.child(C_PUB).child(id).child(C_MSG).setValue(finalvalue);
+                ref.child(C_PUB).child(id).child(C_MSG).setValue(finalvalue);
 
                 return null;
             }
@@ -218,7 +198,7 @@ public class CloudSync {
 
     }
 
-    private ValueEventListener velpub = new ValueEventListener() {
+    private ValueEventListener vel = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -258,7 +238,7 @@ public class CloudSync {
             for (final DataSnapshot ds : dataSnapshot.child(C_PUB).getChildren()) {     //拉取所有資料節點
                 for (final DataSnapshot ds_ctx : dataSnapshot.child(C_PUB).child(ds.getKey()).getChildren()) {      //進入節點
 
-                    if (ds_ctx.getKey().equals(C_MSG) == true) {   //解出Message
+                    if (ds_ctx.getKey().indexOf(C_MSG) == 0) {   //解出Message
                         String value = (String) ds_ctx.getValue();
                         value = deAES(value);
                         for (Map<String, Object> mso : deJSON_Msg(value)) {
@@ -269,6 +249,7 @@ public class CloudSync {
                 }
             }
             prm.setAllPublicMessage(lm);
+
 
 
 //
@@ -311,7 +292,7 @@ public class CloudSync {
             List<Plan> lp = new ArrayList<>();
             for (final DataSnapshot ds : dataSnapshot.child(C_PUB).getChildren()) {     //拉取所有資料節點
                 for (final DataSnapshot ds_ctx : dataSnapshot.child(C_PUB).child(ds.getKey()).getChildren()) {      //進入節點
-                    if (ds_ctx.getKey().equals(C_PLN) == true) {        //解出Plan
+                    if (ds_ctx.getKey().indexOf(C_PLN) == 0) {        //解出Plan
                         String value = (String) ds_ctx.getValue();
                         value = deAES(value);
                         lp.add(deJSON_Plan(value));
@@ -326,21 +307,19 @@ public class CloudSync {
             }
             act.initListView();
 
-        }
 
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    };
-
-
-    private ValueEventListener velpri = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-
-            //拉取資料
-//            String value = dataSnapshot.getValue(String.class);
+            //拉取封存的Plan
+            List<Plan> lppri = new ArrayList<>();
+            for (final DataSnapshot ds : dataSnapshot.child(C_PRI).getChildren()) {     //拉取所有資料節點
+                for (final DataSnapshot ds_ctx : dataSnapshot.child(C_PRI).child(ds.getKey()).getChildren()) {      //進入節點
+                    if (ds_ctx.getKey().indexOf(C_PLN) == 0) {        //解出Plan
+                        String value = (String) ds_ctx.getValue();
+                        value = deAES(value);
+                        lppri.add(deJSON_Plan(value));
+                        break;
+                    }
+                }
+            }
 
         }
 
@@ -349,6 +328,22 @@ public class CloudSync {
 
         }
     };
+
+
+//    private ValueEventListener velpri = new ValueEventListener() {
+//        @Override
+//        public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//            //拉取資料
+////            String value = dataSnapshot.getValue(String.class);
+//
+//        }
+//
+//        @Override
+//        public void onCancelled(DatabaseError databaseError) {
+//
+//        }
+//    };
 
 
     private String deAES(String value) {
@@ -419,7 +414,13 @@ public class CloudSync {
 
     }
 
-    private void delete(DatabaseReference ref) {    //刪除指定的資料節點資料
+    private void clear(DatabaseReference r) {    //刪除指定的資料節點資料
+
+        r.removeValue();
+
+    }
+
+    public void clear() {
 
         ref.removeValue();
 
@@ -427,7 +428,7 @@ public class CloudSync {
 
     public void deleteOrders(final String plan_id, final String subscriber_id) {
 
-        fdbref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -439,7 +440,8 @@ public class CloudSync {
                         Order order = deJSON_Order(value);
 
                         if (order.getSubscriber_id().equals(subscriber_id) == true) {    //刪除條件比對
-                            ds.getRef().removeValue();
+//                            ds.getRef().removeValue();
+                            clear(ds.getRef());
                         }
 
                     }
@@ -452,6 +454,36 @@ public class CloudSync {
 
             }
         });
+
+    }
+
+
+    public void deletePlanPackage(String plan_id) {
+
+        clear(ref.child(C_PUB).child(plan_id));
+
+    }
+
+
+    public void uptoCloud(Plan pushPlan, List<Order> pushOrder, Map<String, Object> pushMsg) {      //更新雲端
+
+        if (prm.mCloudSync != null) {
+            if (pushPlan != null) {
+                prm.mCloudSync.publish(C_PUB, pushPlan);    //發佈Plan資料
+            }
+            if (pushOrder != null) {
+                prm.mCloudSync.publish(pushOrder);   //發佈Order資料
+            }
+            if (pushMsg != null) {
+                prm.mCloudSync.publish(pushMsg);      //發佈Message資料
+            }
+        }
+
+    }
+
+    public void uptoCloud(Plan plan) {   //收藏
+
+        publish(C_PRI, plan);
 
     }
 
