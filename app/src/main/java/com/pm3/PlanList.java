@@ -196,15 +196,13 @@ public class PlanList extends AppCompatActivity
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
         final int 這筆訂單 = position;
-        final Order order=mPrivatePlanList.get(這筆訂單);
         new AlertDialog.Builder(this)
                 .setMessage("這筆訂單繳費了？")
                 .setPositiveButton("是的", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        order.set繳費(true);
-                        mPrivatePlanList.remove(這筆訂單);
-                        mPrivatePlanList.add(order);
+
+                        mPrivatePlanList.get(這筆訂單).set繳費(true);
                         prm.updateMyOrders(plan,mPrivatePlanList);//更新雲上order資料
                     }
                 })

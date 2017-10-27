@@ -65,13 +65,17 @@ public class OnlinListAdapter extends BaseAdapter {
 
 
         //設定資料//
-        tvItemId.setText("id");
+        tvItemId.setText("");
         tvitemtopic.setText(plan.getTopic());
         tvitem發起人.setText(plan.getOrganizer());
         tvitemlocation.setText(plan.getLocation());
         tvitemdeadline.setText(calendar2string(plan.getDeadline()));
         tvitemarrivaltime.setText(calendar2string(plan.getArrivaltime()));
         System.out.println(v.getBackground());
+        if (plan.get截止()) {
+            tvItemId.setText("[已截止]");
+            tvItemId.setTextColor(0xffff4081);
+        }
         return v;
     }
 

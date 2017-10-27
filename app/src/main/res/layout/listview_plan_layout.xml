@@ -12,13 +12,14 @@
 
     <TextView
         android:id="@+id/itemId"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:hint=""
         android:textSize="20sp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="@+id/itemdeadline"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp" />
 
     <TextView
         android:id="@+id/itemtopic"

@@ -24,6 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name="com.pm3.AnnounceReceiver" />
+
         <activity
             android:name="com.pm3.Start"
             android:screenOrientation="portrait" />
@@ -32,7 +35,7 @@
             android:screenOrientation="portrait" />
         <activity android:name="com.pm3.Follow" />
         <activity android:name="com.pm3.PlanList" />
-        <activity android:name="com.pm3.MessageActivity"></activity>
+        <activity android:name="com.pm3.MessageActivity" />
     </application>
 
 </manifest>

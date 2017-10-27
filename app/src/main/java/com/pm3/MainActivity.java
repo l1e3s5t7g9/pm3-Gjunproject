@@ -35,7 +35,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements
         AdapterView.OnItemSelectedListener,
-        AdapterView.OnItemClickListener {
+        AdapterView.OnItemClickListener ,
+        AdapterView.OnItemLongClickListener{
 
     private A prm;
     private Handler han = new Handler();
@@ -320,6 +321,7 @@ public class MainActivity extends AppCompatActivity
         OnlinListAdapter = new OnlinListAdapter(this);
         mListView.setAdapter(OnlinListAdapter);
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);//設置長按效果
     }
 
     //回傳資料後...
@@ -455,4 +457,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+        return false;
+    }
 }

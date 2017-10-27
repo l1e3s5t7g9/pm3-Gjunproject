@@ -51,13 +51,13 @@ public class Start extends AppCompatActivity
     private Calendar 截止時間;
     private Calendar 預計送達時間;
     private MyListAdapter myListAdapter;
+    private ImageButton bt_settinglink;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
 
         ImageButton fab = (ImageButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +119,6 @@ public class Start extends AppCompatActivity
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(new MyListAdapter(this));
         mListView.setOnItemClickListener(this);
-        mListView.setOnItemLongClickListener(this);//設置長按效果
     }
 
     // ==========回上一頁==========

@@ -74,6 +74,10 @@ public class PlanListAdapter extends BaseAdapter {
         tvItemCommente.setText(Commente);
         if (order.get繳費()) {
             tvItemId.setText("[已繳費]");
+            tvItemId.setTextColor(0xff3f51b5);
+        }
+        else {
+            tvItemId.setText("[未繳費]");
             tvItemId.setTextColor(0xffff4081);
         }
         return v;
